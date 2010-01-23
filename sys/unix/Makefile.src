@@ -1,6 +1,9 @@
 #	NetHack Makefile.
 #	SCCS Id: @(#)Makefile.src	3.4	2002/03/02
 
+# Modified by Ben Smith (benjamin.coder.smith@gmail.com), January 2010 
+# to add Python scripting support via NetHack's window system. 
+
 # newer makes predefine $(MAKE) to 'make' and do smarter processing of
 # recursive make calls if $(MAKE) is used
 # these makes allow $(MAKE) to be overridden by the environment if someone
@@ -129,6 +132,9 @@ SYSOBJ = ioctl.o unixmain.o unixtty.o unixunix.o unixres.o
 #   OR compile backwards compatible a.out format
 # CFLAGS = -O2 -b i486-linuxaout -fomit-frame-pointer -I../include
 # LFLAGS = -b i486-linuxaout -L/usr/X11R6/lib
+#   OR compile with Python 2.6 support on Linux
+# CFLAGS = -O2 -fomit-frame-pointer -I../include -DPYTHON -I/usr/include/python2.6
+# LFLAGS = -L/usr/X11R6/lib
 
 # flags for BeOS
 #   on a Mac/BeBox:
@@ -212,6 +218,10 @@ WINBEOBJ =
 #	../win/BeOS/NHMenuWindow.cpp ../win/BeOS/NHMapWindow.cpp tile.c
 #WINBEOBJ = winbe.o NHWindow.o NHMenuWindow.o NHMapWindow.o tile.o
 
+# Files for python support
+# WINPYTHONSRC = ../win/python/winpython.c
+# WINPYTHONOBJ = winpython.o
+
 #
 #
 WINSRC = $(WINTTYSRC)
@@ -254,6 +264,9 @@ WINGEMLIB = -le_gem -lgem
 #
 # libraries for BeOS 
 WINBELIB = -lbe
+#
+# libraries for Python
+WINPYTHONLIB = -lpython2.6
 
 WINLIB = $(WINTTYLIB)
 

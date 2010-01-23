@@ -2,6 +2,9 @@
 /* Copyright (c) D. Cohrs, 1993. */
 /* NetHack may be freely redistributed.  See license for details. */
 
+/* Modified by Ben Smith (benjamin.coder.smith@gmail.com), January 2010 */
+/* to add Python scripting support via NetHack's window system. */
+
 #include "hack.h"
 #ifdef TTY_GRAPHICS
 #include "wintty.h"
@@ -40,6 +43,10 @@ extern struct window_procs Gnome_procs;
 #ifdef MSWIN_GRAPHICS
 extern struct window_procs mswin_procs;
 #endif
+#ifdef PYTHON
+extern struct window_procs python_procs;
+extern void NDECL(win_python_init);
+#endif
 
 STATIC_DCL void FDECL(def_raw_print, (const char *s));
 
@@ -55,6 +62,9 @@ struct win_choices {
 #endif
 #ifdef X11_GRAPHICS
     { &X11_procs, win_X11_init },
+#endif
+#ifdef PYTHON
+    { &python_procs, win_python_init },
 #endif
 #ifdef QT_GRAPHICS
     { &Qt_procs, 0 },

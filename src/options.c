@@ -2,6 +2,9 @@
 /* Copyright (c) Stichting Mathematisch Centrum, Amsterdam, 1985. */
 /* NetHack may be freely redistributed.  See license for details. */
 
+/* Modified by Ben Smith (benjamin.coder.smith@gmail.com), January 2010 */
+/* to add Python scripting support via NetHack's window system. */
+
 #ifdef OPTION_LISTS_ONLY	/* (AMIGA) external program for opt lists */
 #include "config.h"
 #include "objclass.h"
@@ -22,6 +25,10 @@ NEARDATA struct instance_flags iflags;	/* provide linkage */
 #else
 #define PREFER_TILED FALSE
 #endif
+
+#ifdef PYTHON
+#include "winpython.h"
+#endif /* PYTHON */
 
 /*
  *  NOTE:  If you add (or delete) an option, please update the short
@@ -295,6 +302,8 @@ static struct Comp_Opt
 						MAXOCLASSES, SET_IN_GAME },
 	{ "player_selection", "choose character via dialog or prompts",
 						12, DISP_IN_GAME },
+	{ "python_script", "python script used to play nethack",
+						1, SET_IN_FILE},
 	{ "race",     "your starting race (e.g., Human, Elf)",
 						PL_CSIZ, DISP_IN_GAME },
 	{ "role",     "your starting role (e.g., Barbarian, Valkyrie)",
@@ -2029,6 +2038,20 @@ goodfruit:
 	    }
 	    return;
 	}
+
+#ifdef PYTHON
+	fullname = "python_script";
+	if (match_optname(opts, fullname, sizeof(fullname)-1, TRUE)) {
+	    if (negated) {
+		bad_negation(fullname, FALSE);
+		return;
+	    } else if ((op = string_for_opt(opts, TRUE)) != 0) {
+		python_script = (char *) malloc(strlen(op) + 1);
+		strncpy(python_script, op, strlen(op) + 1);
+	    }
+	    return;
+	}
+#endif /* PYTHON */
 
 	/* WINCAP
 	 * setting window colors

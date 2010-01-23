@@ -1,0 +1,1 @@
+OPTIONS=windowtype:python,python_script:/tmp/minimum_procs.py

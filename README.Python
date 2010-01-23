@@ -1,0 +1,37 @@
+This file is from a patch that allows nethack to interface with python through 
+the nethack window interface.  The window interface is documented in the source
+ distribution in the file doc/window.doc.
+
+This allows one to write Python code that interacts with NetHack in a fashion 
+that doesn't expose NetHack internals.  This implementation should contain 
+everything one would need to implement new user interfaces or programs that 
+play NetHack.  This is not a means to alter how the NetHack game works, it is 
+only an interface.  Python is "embedded" in NetHack, and a special interface 
+module imported into the embedded interpreter's main namespace.
+
+The current version of this patch is against the NetHack 3.4.3 source.  I have 
+only used it on Ubuntu 9.10.  You'll need the python-dev package to compile, 
+and I've only built against Python 2.6, though I don't see that 2.5 would be a 
+problem.
+
+To apply the patch, copy it into the root folder of a fresh extract of NetHack 
+3.4.3 and issue the command:
+
+patch -p1 <python.diff
+
+You will still need to configure the NetHack build system according to the 
+documentation in sys/unix/Install.unx and sys/unix/README.Linux - non-trivial
+but not terrible.  One thing you must do is enable the Python settings in the 
+file src/Makefile (after running sys/unix/setup.sh).  This is also where you 
+can configure which other nethack window systems, such as TTY, X11, Gnome, and
+Qt3 are built into your NetHack binary.  In this implementation, Python *is* 
+the window system, and can be configured by your ~/.nethackrc.  A sample 
+.nethackrc is included as win/python/sample_nethackrc.
+
+In the directory win/python/ is winpython.c, the bulk of the implementation.  
+Also included is the sample .nethackrc, and an extremely limited example of
+the python interface as minimum_procs.py.
+
+All source is licensed under the NetHack license found in dat/license.
+
+Ben Smith (benjamin.coder.smith@gmail.com) January 2010

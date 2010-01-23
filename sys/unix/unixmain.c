@@ -2,6 +2,9 @@
 /* Copyright (c) Stichting Mathematisch Centrum, Amsterdam, 1985. */
 /* NetHack may be freely redistributed.  See license for details. */
 
+/* Modified by Ben Smith (benjamin.coder.smith@gmail.com), January 2010 */
+/* to add Python scripting support via NetHack's window system. */
+
 /* main.c - Unix NetHack */
 
 #include "hack.h"
@@ -43,6 +46,11 @@ static void NDECL(wd_message);
 #ifdef WIZARD
 static boolean wiz_error_flag = FALSE;
 #endif
+
+#ifdef PYTHON
+#include "winpython.h"
+#endif /* PYTHON */
+
 
 int
 main(argc,argv)
@@ -284,6 +292,9 @@ not_recovered:
 	}
 
 	moveloop();
+#ifdef PYTHON
+        win_python_finish();
+#endif /* PYTHON */
 	exit(EXIT_SUCCESS);
 	/*NOTREACHED*/
 	return(0);
