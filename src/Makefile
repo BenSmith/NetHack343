@@ -64,7 +64,7 @@ SYSOBJ = ioctl.o unixmain.o unixtty.o unixunix.o unixres.o
 #	if you get setcgtty() warnings during execution, you are feeding gcc
 #		a non-ANSI <sys/ioctl.h> -- either run fixincludes on it or use
 #		-traditional in CFLAGS
-# CC = gcc
+CC = gcc
 #
 #	For Bull DPX/2 systems at B.O.S. 2.0 or higher use the following:
 #
@@ -133,8 +133,8 @@ SYSOBJ = ioctl.o unixmain.o unixtty.o unixunix.o unixres.o
 # CFLAGS = -O2 -b i486-linuxaout -fomit-frame-pointer -I../include
 # LFLAGS = -b i486-linuxaout -L/usr/X11R6/lib
 #   OR compile with Python 2.6 support on Linux
-# CFLAGS = -O2 -fomit-frame-pointer -I../include -DPYTHON -I/usr/include/python2.6
-# LFLAGS = -L/usr/X11R6/lib
+CFLAGS = -O2 -fomit-frame-pointer -I../include -DPYTHON -I/usr/include/python2.6
+LFLAGS = -L/usr/X11R6/lib
 
 # flags for BeOS
 #   on a Mac/BeBox:
@@ -152,19 +152,19 @@ SYSOBJ = ioctl.o unixmain.o unixtty.o unixunix.o unixres.o
 # directories.  The ones given below is the usual spot for linux systems.
 # The paths are for glibconfig.h and gnomesupport.h respectively.
 #
-GNOMEINC=-I/usr/lib/glib/include -I/usr/lib/gnome-libs/include -I../win/gnome
+#GNOMEINC=-I/usr/lib/glib/include -I/usr/lib/gnome-libs/include -I../win/gnome
 
 # flags for debugging:
 # CFLAGS = -g -I../include
 
-CFLAGS = -O -I../include
-LFLAGS = 
+# CFLAGS = -O -I../include
+# LFLAGS = 
 
 # The Qt and Be window systems are written in C++, while the rest of
 # NetHack is standard C.  If using Qt, uncomment the LINK line here to get
 # the C++ libraries linked in.
-CXXFLAGS = $(CFLAGS) -I. -I$(QTDIR)/include
-CXX=g++
+#CXXFLAGS = $(CFLAGS) -I. -I$(QTDIR)/include
+#CXX=g++
 #LINK=g++
 #	For cross-compiling, eg. with gcc on Linux (see also CC further up):
 #CXX=arm-linux-g++
@@ -219,13 +219,13 @@ WINBEOBJ =
 #WINBEOBJ = winbe.o NHWindow.o NHMenuWindow.o NHMapWindow.o tile.o
 
 # Files for python support
-# WINPYTHONSRC = ../win/python/winpython.c
-# WINPYTHONOBJ = winpython.o
+WINPYTHONSRC = ../win/python/winpython.c
+WINPYTHONOBJ = winpython.o
 
 #
 #
-WINSRC = $(WINTTYSRC)
-WINOBJ = $(WINTTYOBJ)
+WINSRC = $(WINTTYSRC) $(WINX11SRC) $(WINPYTHONSRC)
+WINOBJ = $(WINTTYOBJ) $(WINX11OBJ) $(WINPYTHONOBJ)
 
 # on some systems the termcap library is in -ltermcap or -lcurses
 # on 386 Xenix, the -ltermlib tputs() seems not to work; use -lcurses instead
@@ -240,14 +240,14 @@ WINOBJ = $(WINTTYOBJ)
 # WINTTYLIB = -ltermcap
 # WINTTYLIB = -lcurses
 # WINTTYLIB = -lcurses16
-# WINTTYLIB = -lncurses
-WINTTYLIB = -ltermlib
+WINTTYLIB = -lncurses
+# WINTTYLIB = -ltermlib
 #
 # libraries for X11
 # If USE_XPM is defined in config.h, you will also need -lXpm here.
-WINX11LIB = -lXaw -lXmu -lXext -lXt -lX11
+# WINX11LIB = -lXaw -lXmu -lXext -lXt -lX11
 # WINX11LIB = -lXaw -lXmu -lXt -lX11
-# WINX11LIB = -lXaw -lXmu -lXext -lXt -lXpm -lX11 -lm
+WINX11LIB = -lXaw -lXmu -lXext -lXt -lXpm -lX11 -lm
 # WINX11LIB = -lXaw -lXmu -lXpm -lXext -lXt -lX11 -lSM -lICE -lm # BSD/OS 2.0
 #
 # libraries for Qt
@@ -268,7 +268,7 @@ WINBELIB = -lbe
 # libraries for Python
 WINPYTHONLIB = -lpython2.6
 
-WINLIB = $(WINTTYLIB)
+WINLIB = $(WINTTYLIB) $(WINX11LIB) $(WINPYTHONLIB)
 
 # any other strange libraries your system needs (for Sysunix only -- the more
 # specialized targets should already be right)
