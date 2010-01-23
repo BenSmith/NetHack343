@@ -696,6 +696,8 @@ load_img.o: ../win/gem/load_img.c ../include/load_img.h
 	$(CC) $(CFLAGS) -c ../win/gem/load_img.c
 gr_rect.o: ../win/gem/gr_rect.c ../include/gr_rect.h
 	$(CC) $(CFLAGS) -c ../win/gem/gr_rect.c
+winpython.o: ../win/python/winpython.c ../include/winpython.h
+	$(CC) $(CFLAGS) -c ../win/python/winpython.c
 tile.o: tile.c $(HACK_H)
 qt_win.o: ../win/Qt/qt_win.cpp $(HACK_H) ../include/func_tab.h \
 		../include/dlb.h ../include/patchlevel.h ../include/tile2x11.h \
