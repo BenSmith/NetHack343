@@ -43,7 +43,7 @@
  * Some combinations make no sense.  See the installation document.
  */
 #define TTY_GRAPHICS	/* good old tty based graphics */
-#define X11_GRAPHICS	/* X11 interface */
+/* #define X11_GRAPHICS */	/* X11 interface */
 /* #define QT_GRAPHICS */	/* Qt interface */
 /* #define GNOME_GRAPHICS */	/* Gnome interface */
 /* #define MSWIN_GRAPHICS */	/* Windows NT, CE, Graphics */
@@ -126,7 +126,7 @@
  * would allow:
  *  xpmtoppm <x11tiles.xpm | pnmscale 1.25 | ppmquant 90 >x11tiles_big.xpm
  */
-# define USE_XPM		/* Disable if you do not have the XPM library */
+/* # define USE_XPM */		/* Disable if you do not have the XPM library */
 # ifdef USE_XPM
 #  define GRAPHIC_TOMBSTONE	/* Use graphical tombstone (rip.xpm) */
 # endif
@@ -169,8 +169,8 @@
 
 #ifdef UNIX
 /* path and file name extension for compression program */
-#define COMPRESS "/bin/gzip"	/* Lempel-Ziv compression */
-#define COMPRESS_EXTENSION ".gz"		/* compress's extension */
+#define COMPRESS "/usr/bin/compress"	/* Lempel-Ziv compression */
+#define COMPRESS_EXTENSION ".Z"		/* compress's extension */
 /* An example of one alternative you might want to use: */
 /* #define COMPRESS "/usr/local/bin/gzip" */	/* FSF gzip compression */
 /* #define COMPRESS_EXTENSION ".gz" */		/* normal gzip extension */
@@ -185,7 +185,7 @@
  *	a tar-like file, thus making a neater installation.  See *conf.h
  *	for detailed configuration.
  */
-#define DLB 	/* not supported on all platforms */
+/* #define DLB */	/* not supported on all platforms */
 
 /*
  *	Defining INSURANCE slows down level changes, but allows games that
@@ -349,7 +349,7 @@ typedef unsigned char	uchar;
  */
 
 /*#define GOLDOBJ */	/* Gold is kept on obj chains - Helge Hafting */
-#define AUTOPICKUP_EXCEPTIONS /* exceptions to autopickup */
+/*#define AUTOPICKUP_EXCEPTIONS */ /* exceptions to autopickup */
 
 /* End of Section 5 */
 
