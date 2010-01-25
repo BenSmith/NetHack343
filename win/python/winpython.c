@@ -187,7 +187,7 @@ mapglyph_function(PyObject *self, PyObject *args)
     
     if (!PyArg_ParseTuple(args, "iii", &glyph, &x, &y))
     {
-        PyErr_SetString(PyExc_TypeError, "mapglyph accepts three integer arguments, glyph, x, y"));
+        PyErr_SetString(PyExc_TypeError, "mapglyph accepts three integer arguments, glyph, x, y");
     }
     mapglyph(glyph, &ochar, &ocolor, &special, x, y);
     return (Py_BuildValue("iii", ochar, ocolor, special));
