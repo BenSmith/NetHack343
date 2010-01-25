@@ -204,14 +204,20 @@ static PyTypeObject nethack_NethackProcType = {
 PyObject *set_interface(PyObject *self, PyObject *args);
 PyObject *check_player_setup(PyObject *self, PyObject *args);
 PyObject *get_interface(PyObject *self, PyObject *args);
+PyObject *glyph2tile_function(PyObject *self, PyObject *args);
+PyObject *mapglyph_fuction(PyObject *self, PyObject *args);
 
 static PyMethodDef PyNhMethods[] = {
     {"set_interface", set_interface, METH_VARARGS,
-    "Set the instance of the class derived from NethackProcs that you want to use to control NetHack."},
+        "Set the instance of the class derived from NethackProcs that you want to use to control NetHack."},
     {"check_player_setup", check_player_setup, METH_VARARGS,
-     "check and see that role/race/gender/alignment are legitimate values."},
+        "check and see that role/race/gender/alignment are legitimate values."},
     {"get_interface", get_interface, METH_VARARGS,
-    "get the instance of the class derived from NethackProcs that's controlling NetHack."},
+        "get the instance of the class derived from NethackProcs that's controlling NetHack."},
+    {"glyph2tile", glyph2tile_function, METH_VARARGS,
+        "get the tile associated with a specific glyph id."},
+    {"mapglyph", mapglyph_function, METH_VARARGS,
+        "map glyph at x, y to NetHack ascii color/char and any special bits"},
     {NULL, NULL, 0, NULL}
 };
         

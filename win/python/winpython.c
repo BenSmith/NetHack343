@@ -136,7 +136,7 @@ check_player_setup(PyObject *self, PyObject *args)
     if (!PyArg_ParseTuple(args, "iiiiii", &initrole, &initrace, &initgend, &initalign, &randomall, &pantheon))
     {
         PyErr_SetString(PyExc_TypeError, "check_player_setup accepts only a tuple of 6 integers");
-	Py_RETURN_FALSE;
+        Py_RETURN_FALSE;
     }
     if (!ok_role(initrole, initrace, initgend, initalign))
     {
@@ -157,6 +157,42 @@ check_player_setup(PyObject *self, PyObject *args)
     
     Py_RETURN_TRUE;
 }
+
+PyObject *
+glyph2tile_function(PyObject *self, PyObject *args)
+{
+    int glyph = 0;
+    
+    if (!PyArg_ParseTuple(args, "i", &glyph))
+    {
+        PyErr_SetString(PyExc_TypeError, "glyph2tile accepts a single integer argument");
+    }
+    return (Py_BuildValue("i", glyph2tile[glyph]));
+}
+
+/*
+mapglyph(int glyph, int *ochar, int *ocolor, unsigned *special, int x, int y)
+                -- Maps glyph at x,y to NetHack ascii character and color.
+                   If it represents something special such as a pet, that
+                   information is returned as set bits in "special." 
+                   Usually called from the window port's print_glyph() 
+                   routine.
+*/
+
+PyObject *
+mapglyph_function(PyObject *self, PyObject *args)
+{
+    int glyph = 0, ochar = 0, ocolor = 0, x = 0, y = 0;
+    unsigned special = 0;
+    
+    if (!PyArg_ParseTuple(args, "iii", &glyph, &x, &y))
+    {
+        PyErr_SetString(PyExc_TypeError, "mapglyph accepts three integer arguments, glyph, x, y"));
+    }
+    mapglyph(glyph, &ochar, &ocolor, &special, x, y);
+    return (Py_BuildValue("iii", ochar, ocolor, special));
+}
+
 
 void
 win_python_init()
@@ -188,7 +224,7 @@ win_python_finish()
     }
     if (python_script)
     {
-	free(python_script);
+        free(python_script);
     }
 }
 
@@ -240,7 +276,7 @@ python_player_selection()
     if (!rv)
     {
         PyErr_SetString(PyExc_AttributeError, "method player_selection failed\n");
-	return;
+        return;
     }
     if (!PyArg_ParseTuple(rv, "iiiiii", &initrole, &initrace, &initgend, &initalign, &randomall, &pantheon))
         PyErr_SetString(PyExc_TypeError, "incorrect type returned from player_selection method");
@@ -259,7 +295,7 @@ python_askname()
     if (!rv)
     {
         PyErr_SetString(PyExc_AttributeError, "method askname failed\n");
-	return;
+        return;
     }
     else
     {
@@ -267,7 +303,7 @@ python_askname()
         if (plname == NULL)
         {
             PyErr_SetString(PyExc_ValueError, "Player name must not be null");
-	    return;
+            return;
         }
         plname[PL_NSIZ - 1] = '\0';
     }
@@ -516,61 +552,61 @@ python_select_menu(winid window, int how, MENU_ITEM_P **menu_list)
 
     if (!rv)
     {
-	PyErr_SetString(PyExc_AttributeError, "method select_menu failed\n");
-	return (0);
+        PyErr_SetString(PyExc_AttributeError, "method select_menu failed\n");
+        return (0);
     }
     
     if (!PyArg_ParseTuple(rv, "O", dict))
     {
-	PyErr_SetString(PyExc_TypeError, "method select_menu expects a python dict or None for a return value.");
-	return (0);
+        PyErr_SetString(PyExc_TypeError, "method select_menu expects a python dict or None for a return value.");
+        return (0);
     }
     if (dict == Py_None)
     {
-	return (0);
+        return (0);
     }
     else if (PyDict_Check(dict))
     {
-	count = (int)PyDict_Size(dict);
-	if (count == 0)
-	{
-	    return (0);
-	}
+        count = (int)PyDict_Size(dict);
+        if (count == 0)
+        {
+            return (0);
+        }
 	
-	if ((how == PICK_NONE) && count > 0)
-	{
-	    PyErr_SetString(PyExc_ValueError, "method select_menu should not return a populated dict when 'how' is PICK_NONE");
-	    return (0);
-	}
-	if ((how == PICK_ONE) && count > 1)
-	{
-	    PyErr_SetString(PyExc_ValueError, "method select_menu should return a dict with only one key:value pair when 'how' is PICK_ONE");
-	    return (0);
-	}
-	menu_item *list = (menu_item *)malloc(sizeof (menu_item) * count);
-	if (!list)
-	{
-	    PyErr_SetString(PyExc_MemoryError, "method select_menu unable to allocate memory for menu items.");
-	    return (0);
-	}
-	i = 0;
-	menu_list = &list;
-	while (PyDict_Next(dict, &pos, &key, &value))
-	{
-	    /* Populate menu_list from dict */
-	    list[i].item = (anything)PyCObject_AsVoidPtr(key);
-	    if (value == Py_None)
-		list[i].count = -1;
-	    else
-		list[i].count = PyInt_AsLong(value);
-	    i++;
-	}
-	return (count);
+        if ((how == PICK_NONE) && count > 0)
+        {
+            PyErr_SetString(PyExc_ValueError, "method select_menu should not return a populated dict when 'how' is PICK_NONE");
+            return (0);
+        }
+        if ((how == PICK_ONE) && count > 1)
+        {
+            PyErr_SetString(PyExc_ValueError, "method select_menu should return a dict with only one key:value pair when 'how' is PICK_ONE");
+            return (0);
+        }
+        menu_item *list = (menu_item *)malloc(sizeof (menu_item) * count);
+        if (!list)
+        {
+            PyErr_SetString(PyExc_MemoryError, "method select_menu unable to allocate memory for menu items.");
+            return (0);
+        }
+        i = 0;
+        menu_list = &list;
+        while (PyDict_Next(dict, &pos, &key, &value))
+        {
+            /* Populate menu_list from dict */
+            list[i].item = (anything)PyCObject_AsVoidPtr(key);
+            if (value == Py_None)
+            list[i].count = -1;
+            else
+            list[i].count = PyInt_AsLong(value);
+            i++;
+        }
+        return (count);
     }
     else
     {
-	PyErr_SetString(PyExc_TypeError, "method select_menu expects a python dict or python integer for a return value.");
-	return (0);
+        PyErr_SetString(PyExc_TypeError, "method select_menu expects a python dict or python integer for a return value.");
+        return (0);
     }
     
     return (0);
@@ -602,11 +638,11 @@ python_nh_poskey(int *x, int *y, int *mod)
     if (!rv)
     {
         PyErr_SetString(PyExc_AttributeError, "method nh_poskey failed\n");
-	return (0);
+        return (0);
     }
     if (!PyArg_ParseTuple(rv, "ciii", &ch, &x, &y, &mod))
     {
-	PyErr_SetString(PyExc_TypeError, "return type from nh_poskey is not (char ch, int x, int y, int mod)");
+        PyErr_SetString(PyExc_TypeError, "return type from nh_poskey is not (char ch, int x, int y, int mod)");
     }
     return ((int)ch);
 }
@@ -624,18 +660,18 @@ python_create_nhwindow(int type)
     if (!rv)
     {
         PyErr_SetString(PyExc_AttributeError, "method create_nhwindow failed\n");
-	return (-1);
+        return (-1);
     }
     if (PyInt_AsLong(rv) == -1)
     {
-	if (PyErr_Occurred())
-	{
-	    PyErr_SetString(PyExc_TypeError, "get_ext_cmd must return an integer");
-	}
-	return (-1);
+        if (PyErr_Occurred())
+        {
+            PyErr_SetString(PyExc_TypeError, "get_ext_cmd must return an integer");
+        }
+        return (-1);
     }
     else
-	return (PyInt_AsLong(rv));
+        return (PyInt_AsLong(rv));
 }
 /*
 clear_nhwindow(window)
@@ -833,15 +869,15 @@ python_init_nhwindows(int *argcp, char **argv)
     FILE *f = fopen(python_script, "r");
     if (!f)
     {
-	PyErr_SetString(PyExc_RuntimeError, "Unable to open python_script file");
-	return;
+        PyErr_SetString(PyExc_RuntimeError, "Unable to open python_script file");
+        return;
     }
 
     int k = PyRun_SimpleFileEx(f, python_script, 1);
     if (k == -1)
     {
         PyErr_SetString(PyExc_RuntimeError, "An error occurred while executing startup script");
-	return;
+        return;
     }
     arglist = PyList_New(0);
     for (i = 0; i < *argcp; i++)
@@ -853,17 +889,17 @@ python_init_nhwindows(int *argcp, char **argv)
     if (!rv)
     {
         PyErr_SetString(PyExc_AttributeError, "method init_nhwindows failed\n");    
-	return;
+        return;
     }
     if (!PyList_Check(rv))
     {
         PyErr_SetString(PyExc_TypeError, "method init_nhwindows must return a list of strings.");
-	return;
+        return;
     }
     if (!interface_object)
     {
-	PyRun_SimpleString("import nethack");
-	PyRun_SimpleString("nethack.set_interface(nethack.NethackProcs())\n");
+        PyRun_SimpleString("import nethack");
+        PyRun_SimpleString("nethack.set_interface(nethack.NethackProcs())\n");
     }
     /* This should be more robust - i.e. check that argv[0] remains
        the same and that argcp is equal or less than what it was.
@@ -932,7 +968,7 @@ python_getlin(const char *question, char *input)
     if (!rv)
     {
         PyErr_SetString(PyExc_AttributeError, "method getlin failed\n");
-	return;
+        return;
     }
     if (PyString_Check(rv))
     {
@@ -942,7 +978,7 @@ python_getlin(const char *question, char *input)
     else
     {
 	PyErr_SetString(PyExc_TypeError, "getlin must return a string");
-	return;
+        return;
     }
 }
 
@@ -960,20 +996,20 @@ python_get_ext_cmd()
     if (!rv)
     {
         PyErr_SetString(PyExc_AttributeError, "method get_ext_cmd failed\n");
-	return (-1);
+        return (-1);
     }
     if (PyInt_AsLong(rv) == -1)
     {
-      if (PyErr_Occurred())
-      {
-	  PyErr_SetString(PyExc_TypeError, "get_ext_cmd must return an integer");
-	  return (-1);
-      }
-      else
-	return (PyInt_AsLong(rv));
+        if (PyErr_Occurred())
+        {
+            PyErr_SetString(PyExc_TypeError, "get_ext_cmd must return an integer");
+            return (-1);
+        }
+        else
+            return (PyInt_AsLong(rv));
     }
     else
-	return (PyInt_AsLong(rv));
+        return (PyInt_AsLong(rv));
 }
 
 /*
@@ -1053,12 +1089,12 @@ python_yn_function(const char *ques, const char *choices, CHAR_P def)
     if (!rv)
     {
         PyErr_SetString(PyExc_AttributeError, "method yn_function failed\n");
-	return ('\0');
+        return ('\0');
     }
     if (!PyString_Check(rv) || !PyString_AsString(rv) || PyString_Size(rv) != 1)
     {
         PyErr_SetString(PyExc_TypeError, "method yn_function expects a single character returned");
-	return ('\0');
+        return ('\0');
     }
     strncpy(&choice, PyString_AsString(rv), 1);
     return (choice);
