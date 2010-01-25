@@ -205,7 +205,7 @@ PyObject *set_interface(PyObject *self, PyObject *args);
 PyObject *check_player_setup(PyObject *self, PyObject *args);
 PyObject *get_interface(PyObject *self, PyObject *args);
 PyObject *glyph2tile_function(PyObject *self, PyObject *args);
-PyObject *mapglyph_fuction(PyObject *self, PyObject *args);
+PyObject *mapglyph_function(PyObject *self, PyObject *args);
 
 static PyMethodDef PyNhMethods[] = {
     {"set_interface", set_interface, METH_VARARGS,
