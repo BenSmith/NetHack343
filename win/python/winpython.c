@@ -8,7 +8,7 @@
 #include "decl.h" // for plname
 #include "flag.h" // for player_selection
 
-
+#define PYTHON_NOISY_DEBUG 1
 
 /* from tile.c */
 extern short glyph2tile[];
@@ -198,17 +198,23 @@ void
 win_python_init()
 {
     PyObject *m = NULL;
+    printf("Before Py_Initialize\n");
     Py_Initialize();
+    printf("1\n");
     nethack_NethackProcType.tp_new = PyType_GenericNew;
+    printf("2\n");
     if (PyType_Ready(&nethack_NethackProcType) < 0)
         return;
+    printf("3\n");
     m = Py_InitModule("nethack", PyNhMethods);
     if (!m)
         return;
+    printf("4\n");
     Py_INCREF(&nethack_NethackProcType);
+    printf("5\n");
     
     PyModule_AddObject(m, "NethackProcs", (PyObject *)&nethack_NethackProcType);
-
+    printf("After initialization");
     PYTHON_INITIALIZED = 1;
 }
 
@@ -1240,6 +1246,9 @@ python_nhgetch()
 PyObject *
 Py_init_nhwindows(PyObject *self, PyObject *args)
 {
+#ifdef PYTHON_NOISY_DEBUG
+    printf("Py_init_nhwindows\n");
+#endif // PYTHON_NOISY_DEBUG
     PyObject *list = PyList_New(0);
     return (list);
 }
@@ -1247,162 +1256,243 @@ Py_init_nhwindows(PyObject *self, PyObject *args)
 PyObject *
 Py_exit_nhwindows(PyObject *self, PyObject *args)
 {
+#ifdef PYTHON_NOISY_DEBUG
+    printf("Py_exit_nhwindows\n");
+#endif // PYTHON_NOISY_DEBUG
     Py_RETURN_NONE;
 }
 
 PyObject *
 Py_suspend_nhwindows(PyObject *self, PyObject *args)
 {
+#ifdef PYTHON_NOISY_DEBUG
+    printf("Py_suspend_nhwindows\n");
+#endif // PYTHON_NOISY_DEBUG
     Py_RETURN_NONE;
 }
 
 PyObject *
 Py_resume_nhwindows(PyObject *self, PyObject *args)
 {
+#ifdef PYTHON_NOISY_DEBUG
+    printf("Py_resume_nhwindows\n");
+#endif // PYTHON_NOISY_DEBUG
     Py_RETURN_NONE;
 }
 
 PyObject *
 Py_create_nhwindow(PyObject *self, PyObject *args)
 {
+#ifdef PYTHON_NOISY_DEBUG
+    printf("Py_create_nhwindow\n");
+#endif // PYTHON_NOISY_DEBUG
     Py_RETURN_NONE;
 }
 
 PyObject *
 Py_clear_nhwindow(PyObject *self, PyObject *args)
 {
+#ifdef PYTHON_NOISY_DEBUG
+    printf("Py_clear_nhwindow\n");
+#endif // PYTHON_NOISY_DEBUG
     Py_RETURN_NONE;
 }
 
 PyObject *
 Py_display_nhwindow(PyObject *self, PyObject *args)
 {
+#ifdef PYTHON_NOISY_DEBUG
+    printf("Py_display_nhwindow\n");
+#endif // PYTHON_NOISY_DEBUG
     Py_RETURN_NONE;
 }
 
  PyObject *
 Py_destroy_nhwindow(PyObject *self, PyObject *args)
 {
+#ifdef PYTHON_NOISY_DEBUG
+    printf("Py_destroy_nhwindow\n");
+#endif // PYTHON_NOISY_DEBUG
     Py_RETURN_NONE;
 }
 
 PyObject *
 Py_curs(PyObject *self, PyObject *args)
 {
+#ifdef PYTHON_NOISY_DEBUG
+    printf("Py_curs\n");
+#endif // PYTHON_NOISY_DEBUG
     Py_RETURN_NONE;
 }
 
 PyObject *
 Py_putstr(PyObject *self, PyObject *args)
 {
+#ifdef PYTHON_NOISY_DEBUG
+    printf("Py_putstr\n");
+#endif // PYTHON_NOISY_DEBUG
     Py_RETURN_NONE;
 }
 
 PyObject *
 Py_display_file(PyObject *self, PyObject *args)
 {
+#ifdef PYTHON_NOISY_DEBUG
+    printf("Py_display_file\n");
+#endif // PYTHON_NOISY_DEBUG
     Py_RETURN_NONE;
 }
 
 PyObject *
 Py_start_menu(PyObject *self, PyObject *args)
 {
+#ifdef PYTHON_NOISY_DEBUG
+    printf("Py_start_menu\n");
+#endif // PYTHON_NOISY_DEBUG
     Py_RETURN_NONE;
 }
 
 PyObject *
 Py_add_menu(PyObject *self, PyObject *args)
 {
+#ifdef PYTHON_NOISY_DEBUG
+    printf("Py_add_menu\n");
+#endif // PYTHON_NOISY_DEBUG
     Py_RETURN_NONE;
 }
 
 PyObject *
 Py_end_menu(PyObject *self, PyObject *args)
 {
+#ifdef PYTHON_NOISY_DEBUG
+    printf("Py_end_menu\n");
+#endif // PYTHON_NOISY_DEBUG
     Py_RETURN_NONE;
 }
 
 PyObject *
 Py_select_menu(PyObject *self, PyObject *args)
 {
+#ifdef PYTHON_NOISY_DEBUG
+    printf("Py_select_menu\n");
+#endif // PYTHON_NOISY_DEBUG
     Py_RETURN_NONE;
 }
 
 PyObject *
 Py_update_inventory(PyObject *self, PyObject *args)
 {
+#ifdef PYTHON_NOISY_DEBUG
+    printf("Py_update_inventory\n");
+#endif // PYTHON_NOISY_DEBUG
     Py_RETURN_NONE;
 }
 
 PyObject *
 Py_mark_synch(PyObject *self, PyObject *args)
 {
+#ifdef PYTHON_NOISY_DEBUG
+    printf("Py_mark_synch\n");
+#endif // PYTHON_NOISY_DEBUG
     Py_RETURN_NONE;
 }
 
 PyObject *
 Py_wait_synch(PyObject *self, PyObject *args)
 {
+#ifdef PYTHON_NOISY_DEBUG
+    printf("Py_wait_synch\n");
+#endif // PYTHON_NOISY_DEBUG
     Py_RETURN_NONE;
 }
 
 PyObject *
 Py_cliparound(PyObject *self, PyObject *args)
 {
+#ifdef PYTHON_NOISY_DEBUG
+    printf("Py_cliparound\n");
+#endif // PYTHON_NOISY_DEBUG
     Py_RETURN_NONE;
 }
 
 PyObject *
 Py_update_positionbar(PyObject *self, PyObject *args)
 {
+#ifdef PYTHON_NOISY_DEBUG
+    printf("Py_update_positionbar\n");
+#endif // PYTHON_NOISY_DEBUG
     Py_RETURN_NONE;
 }
 
 PyObject *
 Py_print_glyph(PyObject *self, PyObject *args)
 {
+#ifdef PYTHON_NOISY_DEBUG
+    printf("Py_print_glyph\n");
+#endif // PYTHON_NOISY_DEBUG
     Py_RETURN_NONE;
 }
 
 PyObject *
 Py_raw_print(PyObject *self, PyObject *args)
 {
+#ifdef PYTHON_NOISY_DEBUG
+    printf("Py_raw_print\n");
+#endif // PYTHON_NOISY_DEBUG
     Py_RETURN_NONE;
 }
 
 PyObject *
 Py_raw_print_bold(PyObject *self, PyObject *args)
 {
+#ifdef PYTHON_NOISY_DEBUG
+    printf("Py_raw_print_bold\n");
+#endif // PYTHON_NOISY_DEBUG
     Py_RETURN_NONE;
 }
 
 PyObject *
 Py_nhgetch(PyObject *self, PyObject *args)
 {
+#ifdef PYTHON_NOISY_DEBUG
+    printf("Py_nhgetch\n");
+#endif // PYTHON_NOISY_DEBUG
     Py_RETURN_NONE;
 }
 
 PyObject *
 Py_nh_poskey(PyObject *self, PyObject *args)
 {
+#ifdef PYTHON_NOISY_DEBUG
+    printf("Py_nh_poskey\n");
+#endif // PYTHON_NOISY_DEBUG
     Py_RETURN_NONE;
 }
 
 PyObject *
 Py_nhbell(PyObject *self, PyObject *args)
 {
+#ifdef PYTHON_NOISY_DEBUG
+    printf("Py_nhbell\n");
+#endif // PYTHON_NOISY_DEBUG
     Py_RETURN_NONE;
 }
 
 PyObject *
 Py_doprev_message(PyObject *self, PyObject *args)
 {
+#ifdef PYTHON_NOISY_DEBUG
+    printf("Py_doprev_message\n");
+#endif // PYTHON_NOISY_DEBUG
     Py_RETURN_NONE;
 }
 
 PyObject *
 Py_yn_function(PyObject *self, PyObject *args)
 {
+#ifdef PYTHON_NOISY_DEBUG
+    printf("Py_yn_function\n");
+#endif // PYTHON_NOISY_DEBUG
   PyObject *str = PyString_FromString("");
   return (str);
 }
@@ -1410,60 +1500,91 @@ Py_yn_function(PyObject *self, PyObject *args)
 PyObject *
 Py_getlin(PyObject *self, PyObject *args)
 {
+#ifdef PYTHON_NOISY_DEBUG
+    printf("Py_getlin\n");
+#endif // PYTHON_NOISY_DEBUG
     Py_RETURN_NONE;
 }
 
 PyObject *
 Py_get_ext_cmd(PyObject *self, PyObject *args)
 {
+#ifdef PYTHON_NOISY_DEBUG
+    printf("Py_get_ext_cmd\n");
+#endif // PYTHON_NOISY_DEBUG
     Py_RETURN_NONE;
 }
 
 PyObject *
 Py_get_nh_event(PyObject *self, PyObject *args)
 {
+#ifdef PYTHON_NOISY_DEBUG
+    printf("Py_get_nh_event\n");
+#endif // PYTHON_NOISY_DEBUG
     Py_RETURN_NONE;
 }
 
 PyObject *
 Py_number_pad(PyObject *self, PyObject *args)
 {
+#ifdef PYTHON_NOISY_DEBUG
+    printf("Py_number_pad\n");
+#endif // PYTHON_NOISY_DEBUG
     Py_RETURN_NONE;
 }
 
 PyObject *
 Py_delay_output(PyObject *self, PyObject *args)
 {
+#ifdef PYTHON_NOISY_DEBUG
+    printf("Py_delay_output\n");
+#endif // PYTHON_NOISY_DEBUG
     Py_RETURN_NONE;
 }
 
 PyObject *
 Py_start_screen(PyObject *self, PyObject *args)
 {
+#ifdef PYTHON_NOISY_DEBUG
+    printf("Py_start_screen\n");
+#endif // PYTHON_NOISY_DEBUG
     Py_RETURN_NONE;
 }
 
 PyObject *
 Py_end_screen(PyObject *self, PyObject *args)
 {
+#ifdef PYTHON_NOISY_DEBUG
+    printf("Py_end_screen\n");
+#endif // PYTHON_NOISY_DEBUG
     Py_RETURN_NONE;
 }
 
 PyObject *
 Py_outrip(PyObject *self, PyObject *args)
 {
+#ifdef PYTHON_NOISY_DEBUG
+    printf("Py_outrip\n");
+#endif // PYTHON_NOISY_DEBUG
     Py_RETURN_NONE;
 }
 
 PyObject *
 Py_player_selection(PyObject *self, PyObject *args)
 {
+#ifdef PYTHON_NOISY_DEBUG
+
+    printf("Py_player_selection\n");
+#endif // PYTHON_NOISY_DEBUG
     Py_RETURN_NONE;
 }
 
 PyObject *
 Py_askname(PyObject *self, PyObject *args)
 {
+#ifdef PYTHON_NOISY_DEBUG
+    printf("Py_askname\n");
+#endif // PYTHON_NOISY_DEBUG
     PyObject *s = PyString_FromString("");
     return (s);
 }
