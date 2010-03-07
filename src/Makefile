@@ -133,7 +133,7 @@ CC = gcc
 # CFLAGS = -O2 -b i486-linuxaout -fomit-frame-pointer -I../include
 # LFLAGS = -b i486-linuxaout -L/usr/X11R6/lib
 #   OR compile with Python 2.6 support on Linux
-CFLAGS = -O2 -fomit-frame-pointer -I../include -DPYTHON -I/usr/include/python2.6
+CFLAGS = -g -fomit-frame-pointer -I../include -DPYTHON -I/usr/include/python2.6
 LFLAGS = -L/usr/X11R6/lib
 
 # flags for BeOS
