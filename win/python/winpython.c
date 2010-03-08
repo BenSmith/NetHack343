@@ -8,7 +8,8 @@
 #include "decl.h" // for plname
 #include "flag.h" // for player_selection
 
-#define PYTHON_NOISY_DEBUG 1
+//#define PYTHON_NOISY_DEBUG
+
 
 /* from tile.c */
 extern short glyph2tile[];
@@ -112,6 +113,7 @@ set_interface(PyObject *self, PyObject *args)
     }
     if (!interface_object)
     {
+	printf("No interface object set\n");
         return (NULL);
     }
     Py_INCREF(interface_object);
@@ -198,23 +200,20 @@ void
 win_python_init()
 {
     PyObject *m = NULL;
-    printf("Before Py_Initialize\n");
     Py_Initialize();
-    printf("1\n");
     nethack_NethackProcType.tp_new = PyType_GenericNew;
-    printf("2\n");
+    
     if (PyType_Ready(&nethack_NethackProcType) < 0)
         return;
-    printf("3\n");
+
     m = Py_InitModule("nethack", PyNhMethods);
     if (!m)
         return;
-    printf("4\n");
-    Py_INCREF(&nethack_NethackProcType);
-    printf("5\n");
     
+    Py_INCREF(&nethack_NethackProcType);
+    
+    iflags.num_pad = FALSE;
     PyModule_AddObject(m, "NethackProcs", (PyObject *)&nethack_NethackProcType);
-    printf("After initialization");
     PYTHON_INITIALIZED = 1;
 }
 
@@ -244,11 +243,16 @@ player_selection()
 void
 python_player_selection()
 {
+#ifdef PYTHON_NOISY_DEBUG
+    printf("python_player_selection()\n");
+#endif // PYTHON_NOISY_DEBUG
+
     PyObject *rv = NULL;
 
     /* KMH, role patch -- Variables used during startup.
     *
-    * If the user wishes to select a role, race, gender, and/or alignment
+    * If the user wishes to select a role, race, gender, and/or alignm
+
     * during startup, the choices should be recorded here.  This
     * might be specified through command-line options, environmental
     * variables, a popup dialog box, menus, etc.
@@ -278,6 +282,10 @@ python_player_selection()
     int	 initalign;	/* starting alignment (index into aligns[])  */
     int	 randomall;	/* randomly assign everything not specified */
     int	 pantheon;	/* deity selection for priest character */
+
+    if (!interface_object)
+        panic("No python interface object.\n");
+
     rv = PyObject_CallMethod(interface_object, "player_selection", "iiiiii", initrole, initrace, initgend, initalign, randomall, pantheon);
     if (!rv)
     {
@@ -295,7 +303,14 @@ askname()
 void
 python_askname()
 {
+#ifdef PYTHON_NOISY_DEBUG
+    printf("python_askname()\n");
+#endif // PYTHON_NOISY_DEBUG
+
     PyObject *rv = NULL;
+
+    if (!interface_object)
+        panic("No python interface object.\n");
 
     rv = PyObject_CallMethod(interface_object, "askname", NULL);
     if (!rv)
@@ -323,8 +338,15 @@ get_nh_event()
 void
 python_get_nh_event()
 {
+#ifdef PYTHON_NOISY_DEBUG
+    printf("python_get_nh_event()\n");
+#endif // PYTHON_NOISY_DEBUG
+
     PyObject *rv = NULL;
-    
+
+    if (!interface_object)
+        panic("No python interface object.\n");
+
     rv = PyObject_CallMethod(interface_object, "get_nh_event", NULL);
     if (!rv)
         PyErr_SetString(PyExc_AttributeError, "method get_nh_event failed\n");
@@ -343,11 +365,22 @@ raw_print(str)
 void
 python_raw_print(const char *str)
 {
+#ifdef PYTHON_NOISY_DEBUG
+    printf("python_raw_print(const char *str)\n");
+#endif // PYTHON_NOISY_DEBUG
+
     PyObject *rv = NULL;
 
+    if (!interface_object)
+    {
+	printf("%s\n", str);
+    }
+    
     rv = PyObject_CallMethod(interface_object, "raw_print", "s", str);
     if (!rv)
+    {
         PyErr_SetString(PyExc_AttributeError, "method raw_print failed\n");
+    }
 }
 
 /*
@@ -358,7 +391,14 @@ raw_print_bold(str)
 void
 python_raw_print_bold(const char *str)
 {
+#ifdef PYTHON_NOISY_DEBUG
+    printf("python_raw_print_bold(const char *str)\n");
+#endif // PYTHON_NOISY_DEBUG
+
     PyObject *rv = NULL;
+
+    if (!interface_object)
+        panic("No python interface object.\n");
 
     rv = PyObject_CallMethod(interface_object, "raw_print_bold", "s", str);
     if (!rv)
@@ -383,7 +423,14 @@ curs(window, x, y)
 void
 python_curs(winid window, int x, int y)
 {
+#ifdef PYTHON_NOISY_DEBUG
+    printf("python_curs(winid window, int x, int y)\n");
+#endif // PYTHON_NOISY_DEBUG
+
     PyObject *rv = NULL;
+
+    if (!interface_object)
+        panic("No python interface object.\n");
 
     rv = PyObject_CallMethod(interface_object, "curs", "iii", window, x, y);
     if (!rv)
@@ -415,7 +462,14 @@ putstr(window, attr, str)
 void
 python_putstr(winid window, int attr, const char *str)
 {
+#ifdef PYTHON_NOISY_DEBUG
+    printf("python_putstr(winid window, int attr, const char *str)\n");
+#endif // PYTHON_NOISY_DEBUG
+
     PyObject *rv;
+
+    if (!interface_object)
+        panic("No python interface object.\n");
 
     rv = PyObject_CallMethod(interface_object, "putstr", "iis", window, attr, str);
     if (!rv)
@@ -432,7 +486,14 @@ start_menu(window)
 void
 python_start_menu(winid window)
 {
+#ifdef PYTHON_NOISY_DEBUG
+    printf("python_start_menu(winid window)\n");
+#endif // PYTHON_NOISY_DEBUG
+
     PyObject *rv = NULL;
+
+    if (!interface_object)
+        panic("No python interface object.\n");
 
     rv = PyObject_CallMethod(interface_object, "start_menu", "i", window);
     if (!rv)
@@ -476,6 +537,10 @@ add_menu(windid window, int glyph, const anything identifier,
 void
 python_add_menu(winid window, int glyph, const ANY_P *identifier, CHAR_P accelerator, CHAR_P groupacc, int attr, const char *str, BOOLEAN_P preselected)
 {
+#ifdef PYTHON_NOISY_DEBUG
+    printf("python_add_menu(winid window, int glyph, const ANY_P *identifier, CHAR_P accelerator, CHAR_P groupacc, int attr, const char *str, BOOLEAN_P preselected)\n");
+#endif // PYTHON_NOISY_DEBUG
+
 
     PyObject *rv = NULL;
     PyCObject *id = (PyObject *)PyCObject_FromVoidPtr((void *)identifier, NULL);
@@ -497,6 +562,9 @@ python_add_menu(winid window, int glyph, const ANY_P *identifier, CHAR_P acceler
 #endif /* WIDENED_PROTOTYPES */
 #endif /* not UNWIDENED_PROTOTYPES */
 
+    if (!interface_object)
+        panic("No python interface object.\n");
+
     rv = PyObject_CallMethod(interface_object, "add_menu", format, window, glyph, id, accelerator, groupacc, attr, str, preselected);
     if (!rv)
         PyErr_SetString(PyExc_AttributeError, "method add_menu failed\n");
@@ -514,7 +582,14 @@ end_menu(window, prompt)
 void
 python_end_menu(winid window, const char *prompt)
 {
+#ifdef PYTHON_NOISY_DEBUG
+    printf("python_end_menu(winid window, const char *prompt)\n");
+#endif // PYTHON_NOISY_DEBUG
+
     PyObject *rv = NULL;
+
+    if (!interface_object)
+        panic("No python interface object.\n");
 
     rv = PyObject_CallMethod(interface_object, "end_menu", "is", window, prompt);
     if (!rv)
@@ -549,11 +624,18 @@ int select_menu(windid window, int how, menu_item **selected)
 int
 python_select_menu(winid window, int how, MENU_ITEM_P **menu_list)
 {
+#ifdef PYTHON_NOISY_DEBUG
+    printf("python_select_menu(winid window, int how, MENU_ITEM_P **menu_list)\n");
+#endif // PYTHON_NOISY_DEBUG
+
     PyObject *rv = NULL, *dict = NULL, *key = NULL, *value = NULL;
     int count = 0, i = 0;
     Py_ssize_t pos = 0;
     anything *a = NULL;
-	    
+
+    if (!interface_object)
+        panic("No python interface object.\n");
+
     rv = PyObject_CallMethod(interface_object, "select_menu", "ii", window, how);
 
     if (!rv)
@@ -636,9 +718,16 @@ int nh_poskey(int *x, int *y, int *mod)
 int
 python_nh_poskey(int *x, int *y, int *mod)
 {
+#ifdef PYTHON_NOISY_DEBUG
+    printf("python_nh_poskey(int *x, int *y, int *mod)\n");
+#endif // PYTHON_NOISY_DEBUG
+
     PyObject *rv = NULL;
     char ch = 0;
-    
+
+    if (!interface_object)
+        panic("No python interface object.\n");
+
     rv = PyObject_CallMethod(interface_object, "nh_poskey", "iiii", ch, x, y, mod);
     
     if (!rv)
@@ -660,7 +749,14 @@ window = create_nhwindow(type)
 winid
 python_create_nhwindow(int type)
 {
+#ifdef PYTHON_NOISY_DEBUG
+    printf("python_create_nhwindow(int type)\n");
+#endif // PYTHON_NOISY_DEBUG
+
     PyObject *rv = NULL;
+
+    if (!interface_object)
+        panic("No python interface object.\n");
 
     rv = PyObject_CallMethod(interface_object, "create_nhwindow", "i", type);
     if (!rv)
@@ -686,7 +782,14 @@ clear_nhwindow(window)
 void
 python_clear_nhwindow(winid window)
 {
+#ifdef PYTHON_NOISY_DEBUG
+    printf("python_clear_nhwindow(winid window)\n");
+#endif // PYTHON_NOISY_DEBUG
+
     PyObject *rv = NULL;
+
+    if (!interface_object)
+        panic("No python interface object.\n");
 
     rv = PyObject_CallMethod(interface_object, "clear_nhwindow", "i", window);
     if (!rv)
@@ -707,7 +810,14 @@ display_nhwindow(window, boolean blocking)
 void
 python_display_nhwindow(winid window, int blocking)
 {
+#ifdef PYTHON_NOISY_DEBUG
+    printf("python_display_nhwindow(winid window, int blocking)\n");
+#endif // PYTHON_NOISY_DEBUG
+
     PyObject *rv = NULL;
+
+    if (!interface_object)
+        panic("No python interface object.\n");
 
     rv = PyObject_CallMethod(interface_object, "display_nhwindow", "ib", window, blocking == 1);
     if (!rv)
@@ -722,8 +832,15 @@ destroy_nhwindow(window)
 void
 python_destroy_nhwindow(winid window)
 {
+#ifdef PYTHON_NOISY_DEBUG
+    printf("python_destroy_nhwindow(winid window)\n");
+#endif // PYTHON_NOISY_DEBUG
+
     PyObject *rv = NULL;
-    
+
+    if (!interface_object)
+        panic("No python interface object.\n");
+
     rv = PyObject_CallMethod(interface_object, "destroy_nhwindow", "i", window);
     if (!rv)
         PyErr_SetString(PyExc_AttributeError, "method destroy_nhwindow failed\n");
@@ -740,7 +857,14 @@ update_inventory()
 void
 python_update_inventory()
 {
+#ifdef PYTHON_NOISY_DEBUG
+    printf("python_update_inventory()\n");
+#endif // PYTHON_NOISY_DEBUG
+
     PyObject *rv = NULL;
+
+    if (!interface_object)
+        panic("No python interface object.\n");
 
     rv = PyObject_CallMethod(interface_object, "update_inventory", NULL);
     if (!rv)
@@ -755,7 +879,14 @@ doprev_message()
 int
 python_doprev_message()
 {
+#ifdef PYTHON_NOISY_DEBUG
+    printf("python_doprev_message()\n");
+#endif // PYTHON_NOISY_DEBUG
+
     PyObject *rv = NULL;
+
+    if (!interface_object)
+        panic("No python interface object.\n");
 
     rv = PyObject_CallMethod(interface_object, "doprev_message", NULL);
     if (!rv)
@@ -770,7 +901,14 @@ nhbell()
 void
 python_nhbell()
 {
+#ifdef PYTHON_NOISY_DEBUG
+    printf("python_nhbell()\n");
+#endif // PYTHON_NOISY_DEBUG
+
     PyObject *rv = NULL;
+
+    if (!interface_object)
+        panic("No python interface object.\n");
 
     rv = PyObject_CallMethod(interface_object, "nhbell", NULL);
     if (!rv)
@@ -786,7 +924,14 @@ mark_synch()
 void
 python_mark_synch()
 {
+#ifdef PYTHON_NOISY_DEBUG
+    printf("python_mark_synch()\n");
+#endif // PYTHON_NOISY_DEBUG
+
     PyObject *rv = NULL;
+
+    if (!interface_object)
+        panic("No python interface object.\n");
 
     rv = PyObject_CallMethod(interface_object, "mark_synch", NULL);
     if (!rv)
@@ -803,11 +948,19 @@ wait_synch()
 void
 python_wait_synch()
 {
+#ifdef PYTHON_NOISY_DEBUG
+    printf("python_wait_synch()\n");
+#endif // PYTHON_NOISY_DEBUG
+
     PyObject *rv = NULL;
+    if (!interface_object)
+        panic("No python interface object.\n");
+
     rv = PyObject_CallMethod(interface_object, "wait_synch", NULL);
     if (!rv)
-        PyErr_SetString(PyExc_AttributeError, "method wait_synch failed\n");
+      PyErr_SetString(PyExc_AttributeError, "method wait_synch failed\n");
 }
+
 
 /*
 resume_nhwindows()
@@ -816,8 +969,15 @@ resume_nhwindows()
 void
 python_resume_nhwindows()
 {
+#ifdef PYTHON_NOISY_DEBUG
+    printf("python_resume_nhwindows()\n");
+#endif // PYTHON_NOISY_DEBUG
+
     PyObject *rv = NULL;
-    
+
+    if (!interface_object)
+        panic("No python interface object.\n");
+
     rv = PyObject_CallMethod(interface_object, "resume_nhwindows", NULL);
     if (!rv)
         PyErr_SetString(PyExc_AttributeError, "method resume_nhwindows failed\n");
@@ -830,7 +990,14 @@ suspend_nhwindows(str)
 void
 python_suspend_nhwindows(const char *str)
 {
+#ifdef PYTHON_NOISY_DEBUG
+    printf("python_suspend_nhwindows(const char *str)\n");
+#endif // PYTHON_NOISY_DEBUG
+
     PyObject *rv = NULL;
+
+    if (!interface_object)
+        panic("No python interface object.\n");
 
     rv = PyObject_CallMethod(interface_object, "suspend_nhwindows", "s", str);
     if (!rv)
@@ -844,7 +1011,14 @@ number_pad(state)
 void
 python_number_pad(int state)
 {
+#ifdef PYTHON_NOISY_DEBUG
+    printf("python_number_pad(int state)\n");
+#endif // PYTHON_NOISY_DEBUG
     PyObject *rv = NULL;
+    
+    if (!interface_object)
+        panic("No python interface object.\n");
+
     rv = PyObject_CallMethod(interface_object, "number_pad", "i", state);
     if (!rv)
         PyErr_SetString(PyExc_AttributeError, "method number_pad failed\n");
@@ -867,45 +1041,59 @@ init_nhwindows(int* argcp, char** argv)
 void
 python_init_nhwindows(int *argcp, char **argv)
 {
+#ifdef PYTHON_NOISY_DEBUG
+    printf("python_init_nhwindows(int *argcp, char **argv)\n");
+#endif // PYTHON_NOISY_DEBUG
+
     PyObject *rv = NULL, *arglist = NULL;
     int i = 0;
 
+    iflags.window_inited = FALSE;
     /* look for something from the options file telling us which file to load
        or look on the command line */
     FILE *f = fopen(python_script, "r");
     if (!f)
     {
         PyErr_SetString(PyExc_RuntimeError, "Unable to open python_script file");
-        return;
+	char *err = strerror(errno);
+	panic("Couldn't open file %s: %s\n", python_script, err);
+	return;
     }
-
     int k = PyRun_SimpleFileEx(f, python_script, 1);
     if (k == -1)
     {
         PyErr_SetString(PyExc_RuntimeError, "An error occurred while executing startup script");
-        return;
+        panic("Unable to execute %s.\n", python_script);
+	return;
     }
     arglist = PyList_New(0);
     for (i = 0; i < *argcp; i++)
     {
         PyList_Append(arglist, PyString_FromString(argv[i]));
     }
+
+    if (!interface_object)
+    {
+        PyRun_SimpleString("import nethack");
+        PyRun_SimpleString("nethack.set_interface(nethack.NethackProcs())\n");
+    }
+    
+    if (!interface_object)
+        panic("No python interface object.\n");
+
     rv = NULL;
     rv = PyObject_CallMethod(interface_object, "init_nhwindows", "O", arglist);
     if (!rv)
     {
         PyErr_SetString(PyExc_AttributeError, "method init_nhwindows failed\n");    
-        return;
+        panic("Python init_nhwindows function failed.\n");
+	return;
     }
     if (!PyList_Check(rv))
     {
         PyErr_SetString(PyExc_TypeError, "method init_nhwindows must return a list of strings.");
-        return;
-    }
-    if (!interface_object)
-    {
-        PyRun_SimpleString("import nethack");
-        PyRun_SimpleString("nethack.set_interface(nethack.NethackProcs())\n");
+        panic("Python init_nhwindows did not return a list.\n");
+	return;
     }
     /* This should be more robust - i.e. check that argv[0] remains
        the same and that argcp is equal or less than what it was.
@@ -918,6 +1106,7 @@ python_init_nhwindows(int *argcp, char **argv)
     {
         argv[i] = PyString_AsString(PyList_GetItem(rv, i));
     }
+    iflags.window_inited = TRUE;
 }
 
 /*
@@ -929,7 +1118,14 @@ exit_nhwindows(str)
 void
 python_exit_nhwindows (const char *str)
 {
+#ifdef PYTHON_NOISY_DEBUG
+    printf("python_exit_nhwindows (const char *str)\n");
+#endif // PYTHON_NOISY_DEBUG
+
     PyObject *rv = NULL;
+
+    if (!interface_object)
+        panic("No python interface object.\n");
 
     rv = PyObject_CallMethod(interface_object, "exit_nhwindows", "s", str);
     if (!rv)
@@ -945,7 +1141,14 @@ delay_output()
 void
 python_delay_output()
 {
+#ifdef PYTHON_NOISY_DEBUG
+    printf("python_delay_output()\n");
+#endif // PYTHON_NOISY_DEBUG
+
     PyObject *rv = NULL;
+
+    if (!interface_object)
+        panic("No python interface object.\n");
 
     rv = PyObject_CallMethod(interface_object, "delay_output", NULL);
     if (!rv)
@@ -968,7 +1171,13 @@ getlin(const char *ques, char *input)
 void
 python_getlin(const char *question, char *input)
 {
+#ifdef PYTHON_NOISY_DEBUG
+    printf("python_getlin(const char *question, char *input)\n");
+#endif // PYTHON_NOISY_DEBUG
     PyObject *rv = NULL;
+
+    if (!interface_object)
+        panic("No python interface object.\n");
 
     rv = PyObject_CallMethod(interface_object, "getlin", "s", question);
     if (!rv)
@@ -997,7 +1206,14 @@ int get_ext_cmd(void)
 int
 python_get_ext_cmd()
 {
+#ifdef PYTHON_NOISY_DEBUG
+    printf("python_get_ext_cmd()\n");
+#endif // PYTHON_NOISY_DEBUG
+
     PyObject *rv = NULL;
+    if (!interface_object)
+        panic("No python interface object.\n");
+
     rv = PyObject_CallMethod(interface_object, "get_ext_cmd", NULL);
     if (!rv)
     {
@@ -1026,6 +1242,9 @@ display_file(str, boolean complain)
 void
 python_display_file(const char *str, BOOLEAN_P complain)
 {
+#ifdef PYTHON_NOISY_DEBUG
+    printf("python_display_file(const char *str, BOOLEAN_P complain)\n");
+#endif // PYTHON_NOISY_DEBUG
     PyObject *rv = NULL;
 #ifdef UNWIDENED_PROTOTYPES
 #ifndef SKIP_BOOLEAN
@@ -1038,6 +1257,9 @@ python_display_file(const char *str, BOOLEAN_P complain)
     char format[] = "si";
 #endif /* WIDENED_PROTOTYPES */
 #endif /* not UNWIDENED_PROTOTYPES */
+
+    if (!interface_object)
+        panic("No python interface object.\n");
 
     rv = PyObject_CallMethod(interface_object, "display_file", format, str, complain);
     if (!rv)
@@ -1070,6 +1292,10 @@ char yn_function(const char *ques, const char *choices, char default)
 char
 python_yn_function(const char *ques, const char *choices, CHAR_P def)
 {
+#ifdef PYTHON_NOISY_DEBUG
+    printf("python_yn_function(const char *ques, const char *choices, CHAR_P def)\n");
+#endif // PYTHON_NOISY_DEBUG
+
     PyObject *rv = NULL;
     char choice = '\0';
  
@@ -1083,13 +1309,18 @@ python_yn_function(const char *ques, const char *choices, CHAR_P def)
 
     if (!choices)
     {
-      format[1] = 'O';
-      Py_INCREF(Py_None);
-      rv = PyObject_CallMethod(interface_object, "yn_function", format, ques, Py_None, def);
-      Py_DECREF(Py_None);
+	format[1] = 'O';
+
+	if (!interface_object)
+	    panic("No python interface object.\n");
+      
+	rv = PyObject_CallMethod(interface_object, "yn_function", format, ques, Py_None, def);
     }
     else
     {
+	if (!interface_object)
+	    panic("No python interface object.\n");
+
 	rv = PyObject_CallMethod(interface_object, "yn_function", format, ques, choices, def);
     }
     if (!rv)
@@ -1124,6 +1355,9 @@ python_update_positionbar(char *features)
 {
     PyObject *rv = NULL;
 
+    if (!interface_object)
+      panic("No python interface object.\n");
+
     rv = PyObject_CallMethod(interface_object, "update_positionbar", "s", features);
     if (!rv)
         PyErr_SetString(PyExc_AttributeError, "method update_positionbar failed\n");
@@ -1140,7 +1374,14 @@ print_glyph(window, x, y, glyph)
 void
 python_print_glyph(winid window, int x, int y, int glyph)
 {
+#ifdef PYTHON_NOISY_DEBUG
+    printf("python_print_glyph(winid window, int x, int y, int glyph)\n");
+#endif // PYTHON_NOISY_DEBUG
+
     PyObject *rv = NULL;
+
+    if (!interface_object)
+      panic("No python interface object.\n");
 
     rv = PyObject_CallMethod(interface_object, "print_glyph", "iiii", window, x, y, glyph);
     if (!rv)
@@ -1157,7 +1398,14 @@ cliparound(x, y)
 void
 python_cliparound(int x, int y)
 {
+#ifdef PYTHON_NOISY_DEBUG
+    printf("python_cliparound(int x, int y)\n");
+#endif // PYTHON_NOISY_DEBUG
+
     PyObject *rv = NULL;
+
+    if (!interface_object)
+      panic("No python interface object.\n");
 
     rv = PyObject_CallMethod(interface_object, "cliparound", "ii", x, y);
     if (!rv)
@@ -1176,7 +1424,14 @@ start_screen()
 void 
 python_start_screen() 
 {
+#ifdef PYTHON_NOISY_DEBUG
+    printf("python_start_screen() \n");
+#endif // PYTHON_NOISY_DEBUG
+
     PyObject *rv = NULL;
+
+    if (!interface_object)
+        panic("No python interface object.\n");
 
     rv = PyObject_CallMethod(interface_object, "start_screen", NULL);
     if (!rv)
@@ -1191,7 +1446,14 @@ end_screen()
 void 
 python_end_screen()
 {
+#ifdef PYTHON_NOISY_DEBUG
+    printf("python_end_screen()\n");
+#endif // PYTHON_NOISY_DEBUG
+
     PyObject *rv = NULL;
+
+    if (!interface_object)
+        panic("No python interface object.\n");
 
     rv = PyObject_CallMethod(interface_object, "end_screen", NULL);
     if (!rv)
@@ -1206,7 +1468,14 @@ outrip(winid, int)
 void
 python_outrip(winid window, int how)
 {
+#ifdef PYTHON_NOISY_DEBUG
+    printf("python_outrip(winid window, int how)\n");
+#endif // PYTHON_NOISY_DEBUG
+
     PyObject *rv = NULL;
+
+    if (!interface_object)
+        panic("No python interface object.\n");
 
     rv = PyObject_CallMethod(interface_object, "outrip", "ii", window, how);
     if (!rv)
@@ -1224,8 +1493,15 @@ int nhgetch()
 int
 python_nhgetch()
 {
+#ifdef PYTHON_NOISY_DEBUG
+    printf("python_nhgetch()\n");
+#endif // PYTHON_NOISY_DEBUG
+
     PyObject *rv = NULL;
     char str = '\0';
+
+    if (!interface_object)
+        panic("No python interface object.\n");
 
     rv = PyObject_CallMethod(interface_object, "nhgetch", NULL);
     if (!rv)
@@ -1588,3 +1864,4 @@ Py_askname(PyObject *self, PyObject *args)
     PyObject *s = PyString_FromString("");
     return (s);
 }
+
