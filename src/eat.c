@@ -178,7 +178,7 @@ static char *eatmbuf = 0;	/* set by cpostfx() */
 
 STATIC_PTR
 int
-eatmdone()		/* called after mimicing is over */
+eatmdone(VOID_ARGS)		/* called after mimicing is over */
 {
 	/* release `eatmbuf' */
 	if (eatmbuf) {
@@ -395,7 +395,7 @@ do_reset_eat()
 
 STATIC_PTR
 int
-eatfood()		/* called each move during eating process */
+eatfood(VOID_ARGS)		/* called each move during eating process */
 {
 	if(!victual.piece ||
 	 (!carried(victual.piece) && !obj_here(victual.piece, u.ux, u.uy))) {
@@ -1013,7 +1013,7 @@ costly_tin(verb)
 
 STATIC_PTR
 int
-opentin()		/* called during each move whilst opening a tin */
+opentin(VOID_ARGS)		/* called during each move whilst opening a tin */
 {
 	register int r;
 	const char *what;
@@ -1189,7 +1189,7 @@ no_opener:
 }
 
 int
-Hear_again()		/* called when waking up after fainting */
+Hear_again(VOID_ARGS)		/* called when waking up after fainting */
 {
 	flags.soundok = 1;
 	return 0;
@@ -2222,7 +2222,7 @@ register int num;
 
 STATIC_PTR
 int
-unfaint()
+unfaint(VOID_ARGS)
 {
 	(void) Hear_again();
 	if(u.uhs > FAINTING)

@@ -714,7 +714,7 @@ boolean ghostly; /* If a bones file restore */
 	/* check for expired region */
 	if (regions[i]->ttl >= 0)
 	    regions[i]->ttl =
-		(regions[i]->ttl > tmstamp) ? regions[i]->ttl - tmstamp : 0;
+		(regions[i]->ttl > tmstamp) ? regions[i]->ttl - (short)tmstamp : 0;
 	mread(fd, (genericptr_t) &regions[i]->expire_f, sizeof (short));
 	mread(fd, (genericptr_t) &regions[i]->can_enter_f, sizeof (short));
 	mread(fd, (genericptr_t) &regions[i]->enter_f, sizeof (short));

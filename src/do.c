@@ -1597,7 +1597,7 @@ donull()
 #ifdef OVLB
 
 STATIC_PTR int
-wipeoff()
+wipeoff(VOID_ARGS)
 {
 	if(u.ucreamed < 4)	u.ucreamed = 0;
 	else			u.ucreamed -= 4;

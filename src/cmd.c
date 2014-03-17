@@ -160,14 +160,14 @@ STATIC_DCL boolean FDECL(help_dir, (CHAR_P,const char *));
 #ifdef OVL1
 
 STATIC_PTR int
-doprev_message()
+doprev_message(VOID_ARGS)
 {
     return nh_doprev_message();
 }
 
 /* Count down by decrementing multi */
 STATIC_PTR int
-timed_occupation()
+timed_occupation(VOID_ARGS)
 {
 	(*timed_occ_fn)();
 	if (multi > 0)
@@ -284,7 +284,7 @@ char ch;
 #ifdef OVLB
 
 STATIC_PTR int
-doextcmd()	/* here after # - now read a full-word command */
+doextcmd(VOID_ARGS)	/* here after # - now read a full-word command */
 {
 	int idx, retval;
 
@@ -300,7 +300,7 @@ doextcmd()	/* here after # - now read a full-word command */
 }
 
 int
-doextlist()	/* here after #? - now list all full-word commands */
+doextlist(VOID_ARGS)	/* here after #? - now list all full-word commands */
 {
 	register const struct ext_func_tab *efp;
 	char	 buf[BUFSZ];
@@ -446,7 +446,7 @@ extcmd_via_menu()	/* here after # - now show pick-list of possible commands */
 
 /* #monster command - use special monster ability while polymorphed */
 STATIC_PTR int
-domonability()
+domonability(VOID_ARGS)
 {
 	if (can_breathe(youmonst.data)) return dobreathe();
 	else if (attacktype(youmonst.data, AT_SPIT)) return dospit();
@@ -476,7 +476,7 @@ domonability()
 }
 
 STATIC_PTR int
-enter_explore_mode()
+enter_explore_mode(VOID_ARGS)
 {
 	if(!discover && !wizard) {
 		pline("Beware!  From explore mode there will be no return to normal game.");
@@ -497,7 +497,7 @@ enter_explore_mode()
 
 /* ^W command - wish for something */
 STATIC_PTR int
-wiz_wish()	/* Unlimited wishes for debug mode by Paul Polderman */
+wiz_wish(VOID_ARGS)	/* Unlimited wishes for debug mode by Paul Polderman */
 {
 	if (wizard) {
 	    boolean save_verbose = flags.verbose;
@@ -513,7 +513,7 @@ wiz_wish()	/* Unlimited wishes for debug mode by Paul Polderman */
 
 /* ^I command - identify hero's inventory */
 STATIC_PTR int
-wiz_identify()
+wiz_identify(VOID_ARGS)
 {
 	if (wizard)	identify_pack(0);
 	else		pline("Unavailable command '^I'.");
@@ -522,7 +522,7 @@ wiz_identify()
 
 /* ^F command - reveal the level map and any traps on it */
 STATIC_PTR int
-wiz_map()
+wiz_map(VOID_ARGS)
 {
 	if (wizard) {
 	    struct trap *t;
@@ -544,7 +544,7 @@ wiz_map()
 
 /* ^G command - generate monster(s); a count prefix will be honored */
 STATIC_PTR int
-wiz_genesis()
+wiz_genesis(VOID_ARGS)
 {
 	if (wizard)	(void) create_particular();
 	else		pline("Unavailable command '^G'.");
@@ -553,7 +553,7 @@ wiz_genesis()
 
 /* ^O command - display dungeon layout */
 STATIC_PTR int
-wiz_where()
+wiz_where(VOID_ARGS)
 {
 	if (wizard) (void) print_dungeon(FALSE, (schar *)0, (xchar *)0);
 	else	    pline("Unavailable command '^O'.");
@@ -562,7 +562,7 @@ wiz_where()
 
 /* ^E command - detect unseen (secret doors, traps, hidden monsters) */
 STATIC_PTR int
-wiz_detect()
+wiz_detect(VOID_ARGS)
 {
 	if(wizard)  (void) findit();
 	else	    pline("Unavailable command '^E'.");
@@ -571,7 +571,7 @@ wiz_detect()
 
 /* ^V command - level teleport */
 STATIC_PTR int
-wiz_level_tele()
+wiz_level_tele(VOID_ARGS)
 {
 	if (wizard)	level_tele();
 	else		pline("Unavailable command '^V'.");
@@ -580,7 +580,7 @@ wiz_level_tele()
 
 /* #monpolycontrol command - choose new form for shapechangers, polymorphees */
 STATIC_PTR int
-wiz_mon_polycontrol()
+wiz_mon_polycontrol(VOID_ARGS)
 {
     iflags.mon_polycontrol = !iflags.mon_polycontrol;
     pline("Monster polymorph control is %s.",
@@ -590,7 +590,7 @@ wiz_mon_polycontrol()
 
 /* #levelchange command - adjust hero's experience level */
 STATIC_PTR int
-wiz_level_change()
+wiz_level_change(VOID_ARGS)
 {
     char buf[BUFSZ];
     int newlevel;
@@ -630,7 +630,7 @@ wiz_level_change()
 
 /* #panic command - test program's panic handling */
 STATIC_PTR int
-wiz_panic()
+wiz_panic(VOID_ARGS)
 {
 	if (yn("Do you want to call panic() and end your game?") == 'y')
 		panic("crash test.");
@@ -639,7 +639,7 @@ wiz_panic()
 
 /* #polyself command - change hero's form */
 STATIC_PTR int
-wiz_polyself()
+wiz_polyself(VOID_ARGS)
 {
         polyself(TRUE);
         return 0;
@@ -647,7 +647,7 @@ wiz_polyself()
 
 /* #seenv command */
 STATIC_PTR int
-wiz_show_seenv()
+wiz_show_seenv(VOID_ARGS)
 {
 	winid win;
 	int x, y, v, startx, stopx, curx;
@@ -689,7 +689,7 @@ wiz_show_seenv()
 
 /* #vision command */
 STATIC_PTR int
-wiz_show_vision()
+wiz_show_vision(VOID_ARGS)
 {
 	winid win;
 	int x, y, v;
@@ -726,7 +726,7 @@ wiz_show_vision()
 
 /* #wmode command */
 STATIC_PTR int
-wiz_show_wmodes()
+wiz_show_wmodes(VOID_ARGS)
 {
 	winid win;
 	int x,y;
@@ -1231,7 +1231,7 @@ minimal_enlightenment()
 }
 
 STATIC_PTR int
-doattributes()
+doattributes(VOID_ARGS)
 {
 	if (!minimal_enlightenment())
 		return 0;
@@ -1244,7 +1244,7 @@ doattributes()
  * (shares enlightenment's tense handling)
  */
 STATIC_PTR int
-doconduct()
+doconduct(VOID_ARGS)
 {
 	show_conduct(0);
 	return 0;
@@ -1982,9 +1982,10 @@ register char *cmd;
 		if (*cmd >= 040 && *cmd < 0177) {
 		    *cp++ = *cmd++;
 		} else if (*cmd & 0200) {
+			char c = *cmd++;
 		    *cp++ = 'M';
 		    *cp++ = '-';
-		    *cp++ = *cmd++ &= ~0200;
+		    *cp++ = c & ~0200;
 		} else {
 		    *cp++ = '^';
 		    *cp++ = *cmd++ ^ 0100;
@@ -2447,7 +2448,7 @@ readchar()
 }
 
 STATIC_PTR int
-dotravel()
+dotravel(VOID_ARGS)
 {
 	/* Keyboard travel command */
 	static char cmd[2];

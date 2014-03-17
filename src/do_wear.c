@@ -92,7 +92,7 @@ register struct obj *otmp;
 
 STATIC_PTR
 int
-Boots_on()
+Boots_on(VOID_ARGS)
 {
     long oldprop =
 	u.uprops[objects[uarmf->otyp].oc_oprop].extrinsic & ~WORN_BOOTS;
@@ -139,7 +139,7 @@ Boots_on()
 }
 
 int
-Boots_off()
+Boots_off(VOID_ARGS)
 {
     int otyp = uarmf->otyp;
     long oldprop = u.uprops[objects[otyp].oc_oprop].extrinsic & ~WORN_BOOTS;
@@ -193,8 +193,8 @@ Boots_off()
     return 0;
 }
 
-STATIC_OVL int
-Cloak_on()
+STATIC_PTR int
+Cloak_on(VOID_ARGS)
 {
     long oldprop =
 	u.uprops[objects[uarmc->otyp].oc_oprop].extrinsic & ~WORN_CLOAK;
@@ -243,7 +243,7 @@ Cloak_on()
 }
 
 int
-Cloak_off()
+Cloak_off(VOID_ARGS)
 {
     int otyp = uarmc->otyp;
     long oldprop = u.uprops[objects[otyp].oc_oprop].extrinsic & ~WORN_CLOAK;
@@ -290,7 +290,7 @@ Cloak_off()
 
 STATIC_PTR
 int
-Helmet_on()
+Helmet_on(VOID_ARGS)
 {
     switch(uarmh->otyp) {
 	case FEDORA:
@@ -347,7 +347,7 @@ Helmet_on()
 }
 
 int
-Helmet_off()
+Helmet_off(VOID_ARGS)
 {
     takeoff_mask &= ~W_ARMH;
 
@@ -390,7 +390,7 @@ Helmet_off()
 
 STATIC_PTR
 int
-Gloves_on()
+Gloves_on(VOID_ARGS)
 {
     long oldprop =
 	u.uprops[objects[uarmg->otyp].oc_oprop].extrinsic & ~WORN_GLOVES;
@@ -415,7 +415,7 @@ Gloves_on()
 }
 
 int
-Gloves_off()
+Gloves_off(VOID_ARGS)
 {
     long oldprop =
 	u.uprops[objects[uarmg->otyp].oc_oprop].extrinsic & ~WORN_GLOVES;
@@ -470,8 +470,8 @@ Gloves_off()
     return 0;
 }
 
-STATIC_OVL int
-Shield_on()
+STATIC_PTR int
+Shield_on(VOID_ARGS)
 {
 /*
     switch (uarms->otyp) {
@@ -490,7 +490,7 @@ Shield_on()
 }
 
 int
-Shield_off()
+Shield_off(VOID_ARGS)
 {
     takeoff_mask &= ~W_ARMS;
 /*
@@ -511,8 +511,8 @@ Shield_off()
 }
 
 #ifdef TOURIST
-STATIC_OVL int
-Shirt_on()
+STATIC_PTR int
+Shirt_on(VOID_ARGS)
 {
 /*
     switch (uarmu->otyp) {
@@ -526,7 +526,7 @@ Shirt_on()
 }
 
 int
-Shirt_off()
+Shirt_off(VOID_ARGS)
 {
     takeoff_mask &= ~W_ARMU;
 /*
@@ -548,13 +548,13 @@ Shirt_off()
  */
 STATIC_PTR
 int
-Armor_on()
+Armor_on(VOID_ARGS)
 {
     return 0;
 }
 
 int
-Armor_off()
+Armor_off(VOID_ARGS)
 {
     takeoff_mask &= ~W_ARM;
     setworn((struct obj *)0, W_ARM);
@@ -1929,7 +1929,7 @@ static const char *disrobing = "";
 
 STATIC_PTR
 int
-take_off()
+take_off(VOID_ARGS)
 {
 	register int i;
 	register struct obj *otmp;
