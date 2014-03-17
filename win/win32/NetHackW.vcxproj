@@ -1,0 +1,459 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{BB934916-7969-40B1-9019-991D06B85236}</ProjectGuid>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset>v120</PlatformToolset>
+    <UseOfMfc>false</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset>v120</PlatformToolset>
+    <UseOfMfc>false</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC60.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC60.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>12.0.21005.1</_ProjectFileVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>.\Release\</OutDir>
+    <IntDir>.\Release\</IntDir>
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>.\Debug\</OutDir>
+    <IntDir>.\Debug\</IntDir>
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Midl>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MkTypLibCompatible>true</MkTypLibCompatible>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <TargetEnvironment>Win32</TargetEnvironment>
+      <TypeLibraryName>.\Release/NetHackW.tlb</TypeLibraryName>
+      <HeaderFileName />
+    </Midl>
+    <ClCompile>
+      <AdditionalOptions>/Gs /Oi-  %(AdditionalOptions)</AdditionalOptions>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <OmitFramePointers>true</OmitFramePointers>
+      <AdditionalIncludeDirectories>..\win\win32;..\include;..\sys\winnt;..\sys\share;..\win\share;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>NDEBUG;WIN32;_WINDOWS;DLB;MSWIN_GRAPHICS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <StringPooling>true</StringPooling>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <PrecompiledHeaderOutputFile>.\Release/NetHackW.pch</PrecompiledHeaderOutputFile>
+      <AssemblerListingLocation>.\Release/</AssemblerListingLocation>
+      <ObjectFileName>.\Release/</ObjectFileName>
+      <ProgramDataBaseFileName>.\Release/</ProgramDataBaseFileName>
+      <WarningLevel>Level3</WarningLevel>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x0409</Culture>
+    </ResourceCompile>
+    <Link>
+      <AdditionalOptions>/MAPINFO:EXPORTS /MAPINFO:LINES  %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalDependencies>comctl32.lib;winmm.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <OutputFile>.\Release/NetHackW.exe</OutputFile>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <ProgramDatabaseFile>.\Release/NetHackW.pdb</ProgramDatabaseFile>
+      <GenerateMapFile>true</GenerateMapFile>
+      <MapFileName>.\Release/NetHackW.map</MapFileName>
+      <SubSystem>Windows</SubSystem>
+      <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <DataExecutionPrevention />
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+    <Bscmake>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <OutputFile>.\Release/NetHackW.bsc</OutputFile>
+    </Bscmake>
+    <PostBuildEvent>
+      <Message>Install exe</Message>
+      <Command>copy $(OutDir)NetHackW.exe ..\binary
+copy ..\dat\nhdat ..\binary
+copy ..\dat\license ..\binary
+if exist tiles.bmp copy tiles.bmp ..\binary
+if exist ..\doc\Guidebook.txt copy ..\doc\Guidebook.txt ..\binary\Guidebook.txt
+if exist ..\doc\nethack.txt copy ..\doc\nethack.txt ..\binary\NetHack.txt
+copy ..\sys\winnt\defaults.nh ..\binary\defaults.nh
+</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Midl>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MkTypLibCompatible>true</MkTypLibCompatible>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <TargetEnvironment>Win32</TargetEnvironment>
+      <TypeLibraryName>.\Debug/NetHackW.tlb</TypeLibraryName>
+      <HeaderFileName />
+    </Midl>
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>..\win\win32;..\include;..\sys\winnt;..\sys\share;..\win\share;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_DEBUG;WIN32;_WINDOWS;DLB;MSWIN_GRAPHICS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>true</MinimalRebuild>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <PrecompiledHeaderOutputFile>.\Debug/NetHackW.pch</PrecompiledHeaderOutputFile>
+      <AssemblerListingLocation>.\Debug/</AssemblerListingLocation>
+      <ObjectFileName>.\Debug/</ObjectFileName>
+      <ProgramDataBaseFileName>.\Debug/</ProgramDataBaseFileName>
+      <WarningLevel>Level3</WarningLevel>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x0409</Culture>
+    </ResourceCompile>
+    <Link>
+      <AdditionalDependencies>comctl32.lib;winmm.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <OutputFile>.\Debug/NetHackW.exe</OutputFile>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <ProgramDatabaseFile>.\Debug/NetHackW.pdb</ProgramDatabaseFile>
+      <SubSystem>Windows</SubSystem>
+      <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <DataExecutionPrevention />
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+    <Bscmake>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <OutputFile>.\Debug/NetHackW.bsc</OutputFile>
+    </Bscmake>
+    <PostBuildEvent>
+      <Message>Install exe</Message>
+      <Command>if NOT exist ..\binary\*.* mkdir ..\binary
+copy $(OutDir)NetHackW.exe ..\binary
+copy ..\dat\nhdat ..\binary
+copy ..\dat\license ..\binary
+if exist tiles.bmp copy tiles.bmp ..\binary
+if exist ..\doc\Guidebook.txt copy ..\doc\Guidebook.txt ..\binary\Guidebook.txt
+if exist ..\doc\nethack.txt copy ..\doc\nethack.txt ..\binary\NetHack.txt
+copy ..\sys\winnt\defaults.nh ..\binary\defaults.nh
+</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="..\src\allmain.c" />
+    <ClCompile Include="..\src\alloc.c" />
+    <ClCompile Include="..\src\apply.c" />
+    <ClCompile Include="..\src\artifact.c" />
+    <ClCompile Include="..\src\attrib.c" />
+    <ClCompile Include="..\src\ball.c" />
+    <ClCompile Include="..\src\bones.c" />
+    <ClCompile Include="..\src\botl.c" />
+    <ClCompile Include="..\src\cmd.c" />
+    <ClCompile Include="..\src\dbridge.c" />
+    <ClCompile Include="..\src\decl.c" />
+    <ClCompile Include="..\src\detect.c" />
+    <ClCompile Include="..\src\dig.c" />
+    <ClCompile Include="..\src\display.c" />
+    <ClCompile Include="..\src\dlb.c" />
+    <ClCompile Include="..\src\do.c" />
+    <ClCompile Include="..\src\do_name.c" />
+    <ClCompile Include="..\src\do_wear.c" />
+    <ClCompile Include="..\src\dog.c" />
+    <ClCompile Include="..\src\dogmove.c" />
+    <ClCompile Include="..\src\dokick.c" />
+    <ClCompile Include="..\src\dothrow.c" />
+    <ClCompile Include="..\src\drawing.c" />
+    <ClCompile Include="..\src\dungeon.c" />
+    <ClCompile Include="..\src\eat.c" />
+    <ClCompile Include="..\src\end.c" />
+    <ClCompile Include="..\src\engrave.c" />
+    <ClCompile Include="..\src\exper.c" />
+    <ClCompile Include="..\src\explode.c" />
+    <ClCompile Include="..\src\extralev.c" />
+    <ClCompile Include="..\src\files.c" />
+    <ClCompile Include="..\src\fountain.c" />
+    <ClCompile Include="..\win\tty\getline.c" />
+    <ClCompile Include="..\src\hack.c" />
+    <ClCompile Include="..\src\hacklib.c" />
+    <ClCompile Include="..\src\invent.c" />
+    <ClCompile Include="..\src\light.c" />
+    <ClCompile Include="..\src\lock.c" />
+    <ClCompile Include="..\src\mail.c" />
+    <ClCompile Include="..\src\makemon.c" />
+    <ClCompile Include="..\src\mapglyph.c" />
+    <ClCompile Include="..\src\mcastu.c" />
+    <ClCompile Include="..\src\mhitm.c" />
+    <ClCompile Include="..\src\mhitu.c" />
+    <ClCompile Include="..\src\minion.c" />
+    <ClCompile Include="..\src\mklev.c" />
+    <ClCompile Include="..\src\mkmap.c" />
+    <ClCompile Include="..\src\mkmaze.c" />
+    <ClCompile Include="..\src\mkobj.c" />
+    <ClCompile Include="..\src\mkroom.c" />
+    <ClCompile Include="..\src\mon.c" />
+    <ClCompile Include="..\src\mondata.c" />
+    <ClCompile Include="..\src\monmove.c" />
+    <ClCompile Include="..\src\monst.c" />
+    <ClCompile Include="..\src\monstr.c" />
+    <ClCompile Include="..\src\mplayer.c" />
+    <ClCompile Include="..\src\mthrowu.c" />
+    <ClCompile Include="..\src\muse.c" />
+    <ClCompile Include="..\src\music.c" />
+    <ClCompile Include="..\sys\winnt\ntsound.c" />
+    <ClCompile Include="..\src\o_init.c" />
+    <ClCompile Include="..\src\objects.c" />
+    <ClCompile Include="..\src\objnam.c" />
+    <ClCompile Include="..\src\options.c" />
+    <ClCompile Include="..\src\pager.c" />
+    <ClCompile Include="..\sys\share\pcmain.c" />
+    <ClCompile Include="..\sys\share\pcsys.c" />
+    <ClCompile Include="..\sys\share\pcunix.c" />
+    <ClCompile Include="..\src\pickup.c" />
+    <ClCompile Include="..\src\pline.c" />
+    <ClCompile Include="..\src\polyself.c" />
+    <ClCompile Include="..\src\potion.c" />
+    <ClCompile Include="..\src\pray.c" />
+    <ClCompile Include="..\src\priest.c" />
+    <ClCompile Include="..\src\quest.c" />
+    <ClCompile Include="..\src\questpgr.c" />
+    <ClCompile Include="..\sys\share\random.c" />
+    <ClCompile Include="..\src\read.c" />
+    <ClCompile Include="..\src\rect.c" />
+    <ClCompile Include="..\src\region.c" />
+    <ClCompile Include="..\src\restore.c" />
+    <ClCompile Include="..\src\rip.c" />
+    <ClCompile Include="..\src\rnd.c" />
+    <ClCompile Include="..\src\role.c" />
+    <ClCompile Include="..\src\rumors.c" />
+    <ClCompile Include="..\src\save.c" />
+    <ClCompile Include="..\src\shk.c" />
+    <ClCompile Include="..\src\shknam.c" />
+    <ClCompile Include="..\src\sit.c" />
+    <ClCompile Include="..\src\sounds.c" />
+    <ClCompile Include="..\src\sp_lev.c" />
+    <ClCompile Include="..\src\spell.c" />
+    <ClCompile Include="..\src\steal.c" />
+    <ClCompile Include="..\src\steed.c" />
+    <ClCompile Include="..\src\teleport.c" />
+    <ClCompile Include="..\src\tile.c" />
+    <ClCompile Include="..\src\timeout.c" />
+    <ClCompile Include="..\src\topten.c" />
+    <ClCompile Include="..\src\track.c" />
+    <ClCompile Include="..\src\trap.c" />
+    <ClCompile Include="..\src\u_init.c" />
+    <ClCompile Include="..\src\uhitm.c" />
+    <ClCompile Include="..\src\vault.c" />
+    <ClCompile Include="..\src\version.c" />
+    <ClCompile Include="..\src\vision.c" />
+    <ClCompile Include="..\src\weapon.c" />
+    <ClCompile Include="..\src\were.c" />
+    <ClCompile Include="..\src\wield.c" />
+    <ClCompile Include="..\src\windows.c" />
+    <ClCompile Include="..\sys\winnt\winnt.c" />
+    <ClCompile Include="..\win\tty\wintty.c" />
+    <ClCompile Include="..\src\wizard.c" />
+    <ClCompile Include="..\src\worm.c" />
+    <ClCompile Include="..\src\worn.c" />
+    <ClCompile Include="..\src\write.c" />
+    <ClCompile Include="..\src\zap.c" />
+    <ClCompile Include="..\win\win32\mhaskyn.c" />
+    <ClCompile Include="..\win\win32\mhdlg.c" />
+    <ClCompile Include="..\win\win32\mhfont.c" />
+    <ClCompile Include="..\win\win32\mhinput.c" />
+    <ClCompile Include="..\win\win32\mhmain.c" />
+    <ClCompile Include="..\win\win32\mhmap.c" />
+    <ClCompile Include="..\win\win32\mhmenu.c" />
+    <ClCompile Include="..\win\win32\mhmsgwnd.c" />
+    <ClCompile Include="..\win\win32\mhrip.c" />
+    <ClCompile Include="..\win\win32\mhsplash.c" />
+    <ClCompile Include="..\win\win32\mhstatus.c" />
+    <ClCompile Include="..\win\win32\mhtext.c" />
+    <ClCompile Include="..\win\win32\mswproc.c" />
+    <ClCompile Include="..\win\win32\winhack.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\include\align.h" />
+    <ClInclude Include="..\include\amiconf.h" />
+    <ClInclude Include="..\include\artifact.h" />
+    <ClInclude Include="..\include\artilist.h" />
+    <ClInclude Include="..\include\attrib.h" />
+    <ClInclude Include="..\include\beconf.h" />
+    <ClInclude Include="..\include\bitmfile.h" />
+    <ClInclude Include="..\include\color.h" />
+    <ClInclude Include="..\include\config.h" />
+    <ClInclude Include="..\include\config1.h" />
+    <ClInclude Include="..\include\coord.h" />
+    <ClInclude Include="..\include\decl.h" />
+    <ClInclude Include="..\include\def_os2.h" />
+    <ClInclude Include="..\include\dgn_file.h" />
+    <ClInclude Include="..\include\display.h" />
+    <ClInclude Include="..\include\dlb.h" />
+    <ClInclude Include="..\include\dungeon.h" />
+    <ClInclude Include="..\include\edog.h" />
+    <ClInclude Include="..\include\emin.h" />
+    <ClInclude Include="..\include\engrave.h" />
+    <ClInclude Include="..\include\epri.h" />
+    <ClInclude Include="..\include\eshk.h" />
+    <ClInclude Include="..\include\extern.h" />
+    <ClInclude Include="..\include\flag.h" />
+    <ClInclude Include="..\include\func_tab.h" />
+    <ClInclude Include="..\include\gem_rsc.h" />
+    <ClInclude Include="..\include\global.h" />
+    <ClInclude Include="..\include\hack.h" />
+    <ClInclude Include="..\include\lev.h" />
+    <ClInclude Include="..\include\load_img.h" />
+    <ClInclude Include="..\include\macconf.h" />
+    <ClInclude Include="..\include\macpopup.h" />
+    <ClInclude Include="..\include\mactty.h" />
+    <ClInclude Include="..\include\macwin.h" />
+    <ClInclude Include="..\include\mail.h" />
+    <ClInclude Include="..\include\mfndpos.h" />
+    <ClInclude Include="..\include\micro.h" />
+    <ClInclude Include="..\include\mkroom.h" />
+    <ClInclude Include="..\include\monattk.h" />
+    <ClInclude Include="..\include\mondata.h" />
+    <ClInclude Include="..\include\monflag.h" />
+    <ClInclude Include="..\include\monst.h" />
+    <ClInclude Include="..\include\monsym.h" />
+    <ClInclude Include="..\include\mttypriv.h" />
+    <ClInclude Include="..\include\nhlan.h" />
+    <ClInclude Include="..\include\ntconf.h" />
+    <ClInclude Include="..\include\obj.h" />
+    <ClInclude Include="..\include\objclass.h" />
+    <ClInclude Include="..\include\os2conf.h" />
+    <ClInclude Include="..\include\patchlevel.h" />
+    <ClInclude Include="..\include\pcconf.h" />
+    <ClInclude Include="..\include\permonst.h" />
+    <ClInclude Include="..\include\prop.h" />
+    <ClInclude Include="..\include\qt_clust.h" />
+    <ClInclude Include="..\include\qt_kde0.h" />
+    <ClInclude Include="..\include\qt_win.h" />
+    <ClInclude Include="..\include\qt_xpms.h" />
+    <ClInclude Include="..\include\qtext.h" />
+    <ClInclude Include="..\include\quest.h" />
+    <ClInclude Include="..\include\rect.h" />
+    <ClInclude Include="..\include\region.h" />
+    <ClInclude Include="..\include\rm.h" />
+    <ClInclude Include="..\include\skills.h" />
+    <ClInclude Include="..\include\sp_lev.h" />
+    <ClInclude Include="..\include\spell.h" />
+    <ClInclude Include="..\include\system.h" />
+    <ClInclude Include="..\include\tcap.h" />
+    <ClInclude Include="..\include\tile2x11.h" />
+    <ClInclude Include="..\include\timeout.h" />
+    <ClInclude Include="..\include\tosconf.h" />
+    <ClInclude Include="..\include\tradstdc.h" />
+    <ClInclude Include="..\include\trampoli.h" />
+    <ClInclude Include="..\include\trap.h" />
+    <ClInclude Include="..\include\unixconf.h" />
+    <ClInclude Include="..\include\vault.h" />
+    <ClInclude Include="..\include\vision.h" />
+    <ClInclude Include="..\include\vmsconf.h" />
+    <ClInclude Include="..\include\winami.h" />
+    <ClInclude Include="..\include\wingem.h" />
+    <ClInclude Include="..\include\winGnome.h" />
+    <ClInclude Include="..\include\winprocs.h" />
+    <ClInclude Include="..\include\wintty.h" />
+    <ClInclude Include="..\include\wintype.h" />
+    <ClInclude Include="..\include\winX.h" />
+    <ClInclude Include="..\include\xwindow.h" />
+    <ClInclude Include="..\include\xwindowp.h" />
+    <ClInclude Include="..\include\you.h" />
+    <ClInclude Include="..\include\youprop.h" />
+    <ClInclude Include="..\win\win32\mhaskyn.h" />
+    <ClInclude Include="..\win\win32\mhdlg.h" />
+    <ClInclude Include="..\win\win32\mhfont.h" />
+    <ClInclude Include="..\win\win32\mhinput.h" />
+    <ClInclude Include="..\win\win32\mhmain.h" />
+    <ClInclude Include="..\win\win32\mhmap.h" />
+    <ClInclude Include="..\win\win32\mhmenu.h" />
+    <ClInclude Include="..\win\win32\mhmsg.h" />
+    <ClInclude Include="..\win\win32\mhmsgwnd.h" />
+    <ClInclude Include="..\win\win32\mhrip.h" />
+    <ClInclude Include="..\win\win32\mhsplash.h" />
+    <ClInclude Include="..\win\win32\mhstatus.h" />
+    <ClInclude Include="..\win\win32\mhtext.h" />
+    <ClInclude Include="..\win\win32\resource.h" />
+    <ClInclude Include="..\win\win32\winMS.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\win\win32\bitmap1.bmp" />
+    <Image Include="..\win\win32\bitmap2.bmp" />
+    <Image Include="..\win\win32\mnsel.bmp" />
+    <Image Include="..\win\win32\mnunsel.bmp" />
+    <Image Include="..\win\win32\NETHACK.ICO" />
+    <Image Include="..\win\win32\small.ico" />
+    <Image Include="..\win\win32\tiles.bmp" />
+    <Image Include="..\win\win32\winhack.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="..\win\win32\winhack.rc">
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">\personal\nhdev\343\vs2008\win\win32;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">\personal\nhdev\343\vs2008\win\win32;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="..\win\win32\ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="dgncomp.vcxproj">
+      <Project>{e0fa16d4-3380-433b-ad70-a4e79d1a7ac1}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="dlb_main.vcxproj">
+      <Project>{80329a67-7dcb-4522-a61b-d8220a655f4a}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="levcomp.vcxproj">
+      <Project>{26dbbb78-4fa4-4981-847c-ab10e76e7573}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="makedefs.vcxproj">
+      <Project>{b4d3c3d4-e31e-4d82-9064-a32e86bfc03d}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="tilemap.vcxproj">
+      <Project>{b49aeeba-76fc-4763-8e12-0c6db3e2fea6}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="tiles.vcxproj">
+      <Project>{ebbb1625-a3b8-4239-b022-e38af68f1291}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="uudecode.vcxproj">
+      <Project>{217ba6af-f3af-4345-b3ab-8358d642502e}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

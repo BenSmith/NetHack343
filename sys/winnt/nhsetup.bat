@@ -117,6 +117,38 @@ copy ..\..\win\win32\uudecode.vcproj  ..\..\build >nul
 copy ..\..\win\win32\nethackw.vcproj  ..\..\build >nul
 :skipVC2008
 
+@REM Visual C++ 2008 Express project files
+if NOT exist ..\..\win\win32\makedefs.vcxproj goto skipVC2013
+if NOT exist ..\..\win\win32\uudecode.vcxproj goto skipVC2013
+if NOT exist ..\..\win\win32\dgncomp.vcxproj goto skipVC2013
+if NOT exist ..\..\win\win32\dlb_main.vcxproj goto skipVC2013
+if NOT exist ..\..\win\win32\nethackw.vcxproj goto skipVC2013
+copy ..\..\win\win32\dgncomp.vcxproj   ..\..\build >nul
+copy ..\..\win\win32\dgncomp.vcxproj.filters   ..\..\build >nul
+copy ..\..\win\win32\dgnstuff.vcxproj  ..\..\build >nul
+copy ..\..\win\win32\dgnstuff.vcxproj.filters  ..\..\build >nul
+copy ..\..\win\win32\dlb_main.vcxproj  ..\..\build >nul
+copy ..\..\win\win32\dlb_main.vcxproj.filters  ..\..\build >nul
+copy ..\..\win\win32\levcomp.vcxproj   ..\..\build >nul
+copy ..\..\win\win32\levcomp.vcxproj.filters   ..\..\build >nul
+copy ..\..\win\win32\levstuff.vcxproj  ..\..\build >nul
+copy ..\..\win\win32\levstuff.vcxproj.filters  ..\..\build >nul
+copy ..\..\win\win32\makedefs.vcxproj  ..\..\build >nul
+copy ..\..\win\win32\makedefs.vcxproj.filters  ..\..\build >nul
+copy ..\..\win\win32\recover.vcxproj   ..\..\build >nul
+copy ..\..\win\win32\recover.vcxproj.filters   ..\..\build >nul
+copy ..\..\win\win32\tile2bmp.vcxproj  ..\..\build >nul
+copy ..\..\win\win32\tile2bmp.vcxproj.filters  ..\..\build >nul
+copy ..\..\win\win32\tiles.vcxproj     ..\..\build >nul
+copy ..\..\win\win32\tiles.vcxproj.filters     ..\..\build >nul
+copy ..\..\win\win32\tilemap.vcxproj   ..\..\build >nul
+copy ..\..\win\win32\tilemap.vcxproj.filters   ..\..\build >nul
+copy ..\..\win\win32\uudecode.vcxproj  ..\..\build >nul
+copy ..\..\win\win32\uudecode.vcxproj.filters  ..\..\build >nul
+copy ..\..\win\win32\nethackw.vcxproj  ..\..\build >nul
+copy ..\..\win\win32\nethackw.vcxproj.filters  ..\..\build >nul
+:skipVC2013
+
 goto :done
 
 :err_win

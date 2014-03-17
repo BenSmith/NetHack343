@@ -1,0 +1,217 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{80329A67-7DCB-4522-A61B-D8220A655F4A}</ProjectGuid>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset>v120</PlatformToolset>
+    <UseOfMfc>false</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset>v120</PlatformToolset>
+    <UseOfMfc>false</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC60.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC60.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>12.0.21005.1</_ProjectFileVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>.\Release\</OutDir>
+    <IntDir>.\Release\</IntDir>
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>.\Debug\</OutDir>
+    <IntDir>.\Debug\</IntDir>
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Midl>
+      <TypeLibraryName>.\Release/dlb_main.tlb</TypeLibraryName>
+      <HeaderFileName />
+    </Midl>
+    <ClCompile>
+      <Optimization>MaxSpeed</Optimization>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <AdditionalIncludeDirectories>..\include;..\sys\winnt;..\win\share;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>NDEBUG;WIN32;_CONSOLE;DLB;WIN32CON;MSWIN_GRAPHICS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <StringPooling>true</StringPooling>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <PrecompiledHeaderOutputFile>.\Release/dlb_main.pch</PrecompiledHeaderOutputFile>
+      <AssemblerListingLocation>.\Release/</AssemblerListingLocation>
+      <ObjectFileName>.\Release/</ObjectFileName>
+      <ProgramDataBaseFileName>.\Release/</ProgramDataBaseFileName>
+      <WarningLevel>Level3</WarningLevel>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x1009</Culture>
+    </ResourceCompile>
+    <Link>
+      <OutputFile>..\util\dlb_main.exe</OutputFile>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <ProgramDatabaseFile>.\Release/dlb_main.pdb</ProgramDatabaseFile>
+      <SubSystem>Console</SubSystem>
+      <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <DataExecutionPrevention />
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+    <Bscmake>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <OutputFile>.\Release/dlb_main.bsc</OutputFile>
+    </Bscmake>
+    <PostBuildEvent>
+      <Message>Packaging via DLB</Message>
+      <Command>echo chdir ..\dat
+chdir ..\dat
+chdir
+echo data &gt;dlb.lst
+echo oracles &gt;&gt;dlb.lst
+if exist options echo options &gt;&gt;dlb.lst
+if exist ttyoptions echo ttyoptions &gt;&gt;dlb.lst
+if exist guioptions echo guioptions &gt;&gt;dlb.lst
+if NOT exist porthelp copy ..\sys\winnt\porthelp porthelp
+if exist porthelp echo porthelp &gt;&gt;dlb.lst
+echo quest.dat &gt;&gt;dlb.lst
+echo rumors &gt;&gt;dlb.lst
+echo help &gt;&gt;dlb.lst
+echo hh &gt;&gt;dlb.lst
+echo cmdhelp &gt;&gt;dlb.lst
+echo history &gt;&gt;dlb.lst
+echo opthelp &gt;&gt;dlb.lst
+echo wizhelp &gt;&gt;dlb.lst
+echo dungeon &gt;&gt;dlb.lst
+echo license &gt;&gt;dlb.lst
+for %25%25N in (*.lev) do echo %25%25N &gt;&gt;dlb.lst
+..\util\dlb_main.exe cIf dlb.lst nhdat
+echo chdir ..\build
+chdir ..\build
+echo if NOT exist ..\binary\*.* mkdir ..\binary
+if NOT exist ..\binary\*.* mkdir ..\binary
+</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Midl>
+      <TypeLibraryName>.\Debug/dlb_main.tlb</TypeLibraryName>
+      <HeaderFileName />
+    </Midl>
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>..\include;..\sys\winnt;..\win\share;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_DEBUG;WIN32;_CONSOLE;DLB;WIN32CON;MSWIN_GRAPHICS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>true</MinimalRebuild>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <PrecompiledHeaderOutputFile>.\Debug/dlb_main.pch</PrecompiledHeaderOutputFile>
+      <AssemblerListingLocation>.\Debug/</AssemblerListingLocation>
+      <ObjectFileName>.\Debug/</ObjectFileName>
+      <ProgramDataBaseFileName>.\Debug/</ProgramDataBaseFileName>
+      <WarningLevel>Level3</WarningLevel>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x1009</Culture>
+    </ResourceCompile>
+    <Link>
+      <OutputFile>..\util\dlb_main.exe</OutputFile>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <ProgramDatabaseFile>.\Debug/dlb_main.pdb</ProgramDatabaseFile>
+      <SubSystem>Console</SubSystem>
+      <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <DataExecutionPrevention />
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+    <Bscmake>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <OutputFile>.\Debug/dlb_main.bsc</OutputFile>
+    </Bscmake>
+    <PostBuildEvent>
+      <Message>Packaging via dlb</Message>
+      <Command>echo chdir ..\dat
+chdir ..\dat
+chdir
+echo data &gt;dlb.lst
+echo oracles &gt;&gt;dlb.lst
+if exist options echo options &gt;&gt;dlb.lst
+if exist ttyoptions echo ttyoptions &gt;&gt;dlb.lst
+if exist guioptions echo guioptions &gt;&gt;dlb.lst
+if NOT exist porthelp copy ..\sys\winnt\porthelp porthelp
+if exist porthelp echo porthelp &gt;&gt;dlb.lst
+echo quest.dat &gt;&gt;dlb.lst
+echo rumors &gt;&gt;dlb.lst
+echo help &gt;&gt;dlb.lst
+echo hh &gt;&gt;dlb.lst
+echo cmdhelp &gt;&gt;dlb.lst
+echo history &gt;&gt;dlb.lst
+echo opthelp &gt;&gt;dlb.lst
+echo wizhelp &gt;&gt;dlb.lst
+echo dungeon &gt;&gt;dlb.lst
+echo license &gt;&gt;dlb.lst
+for %25%25N in (*.lev) do echo %25%25N &gt;&gt;dlb.lst
+..\util\dlb_main.exe cIf dlb.lst nhdat
+echo chdir ..\build
+chdir ..\build
+echo if NOT exist ..\binary\*.* mkdir ..\binary
+if NOT exist ..\binary\*.* mkdir ..\binary
+</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="..\src\alloc.c" />
+    <ClCompile Include="..\src\dlb.c" />
+    <ClCompile Include="..\util\dlb_main.c" />
+    <ClCompile Include="..\util\panic.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\include\dlb.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="dgncomp.vcxproj">
+      <Project>{e0fa16d4-3380-433b-ad70-a4e79d1a7ac1}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="levcomp.vcxproj">
+      <Project>{26dbbb78-4fa4-4981-847c-ab10e76e7573}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="makedefs.vcxproj">
+      <Project>{b4d3c3d4-e31e-4d82-9064-a32e86bfc03d}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
